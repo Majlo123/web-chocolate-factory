@@ -61,7 +61,7 @@ export default {
     mounted() {
         const factoryId = this.$route.params.id;
         axios
-            .get(`http://localhost:8080/WebShopAppREST/rest/factories/${factoryId}`)
+            .get(`http://localhost:8080/WebShopAppREST/rest/factories/'${factoryId}`)
             .then(response => {
                 this.factoryName = response.data.name;
             })

@@ -1,7 +1,7 @@
 <template>
     <div>
         <h1>Chocolate Factories</h1>
-        <div v-for="factory in factories" :key="factory.id" class="factory-card">
+        <div v-for="factory in sortedFactories" :key="factory.id" class="factory-card">
             <h2>{{ factory.name }}</h2>
             <img :src="'/path/to/images/' + factory.logo" alt="Logo" class="factory-logo">
             <p><strong>Location:</strong> {{ factory.location.street }}, {{ factory.location.city }}, {{ factory.location.state }}</p>
@@ -32,6 +32,19 @@ export default {
             .catch(error => {
                 console.error("Error fetching factories", error);
             });
+    },
+    computed: {
+        sortedFactories() {
+            return this.factories.slice().sort((a, b) => {
+                if (a.workStatus === 'Working' && b.workStatus !== 'Working') {
+                    return -1;
+                } else if (a.workStatus !== 'Working' && b.workStatus === 'Working') {
+                    return 1;
+                } else {
+                    return 0;
+                }
+            });
+        }
     },
     methods: {
         viewMore(factoryId) {
