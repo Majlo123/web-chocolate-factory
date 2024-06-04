@@ -6,7 +6,6 @@ import java.io.FileReader;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.StringTokenizer;
-
 import beans.Product;
 
 public class ProductDAO {
