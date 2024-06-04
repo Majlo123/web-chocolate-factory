@@ -1,9 +1,5 @@
 <template>
   <nav>
-    <router-link to="/books">books </router-link>
-    <router-link to="/add_book">add book </router-link>
-    <router-link to="/flights">flights </router-link>
-    <router-link to="/add_flight">add flight</router-link>
   </nav>
   <router-view/>
 </template>

@@ -43,4 +43,12 @@ public class FactoryDAO {
             System.out.println("Error loading factories from file: " + e.getMessage());
         }
     }
+    public Factory getById(int id) {
+        for (Factory factory : factoryList) {
+            if (factory.getId() == id) {
+                return factory;
+            }
+        }
+        return null; 
+    }
 }
