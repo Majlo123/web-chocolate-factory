@@ -4,11 +4,14 @@ import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
 import java.io.Reader;
+import java.io.Writer;
+import java.io.FileWriter;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
 import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
 
 import beans.Factory;
@@ -50,5 +53,14 @@ public class FactoryDAO {
             }
         }
         return null; 
+    }
+    public void updateFactory(Factory factory) {
+        try (Writer writer = new FileWriter(new File(contextPath, "resources/factories.json"))) {
+            Gson gson = new GsonBuilder().setPrettyPrinting().create();
+            gson.toJson(factoryList, writer);
+        } catch (IOException e) {
+            e.printStackTrace();
+            System.out.println("Error updating factory in file: " + e.getMessage());
+        }
     }
 }

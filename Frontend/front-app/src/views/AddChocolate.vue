@@ -59,9 +59,9 @@ export default {
         }
     },
     mounted() {
-        const factoryId = this.$route.params.id;
+        const id = this.$route.params.id;
         axios
-            .get(`http://localhost:8080/WebShopAppREST/rest/factories/'${factoryId}`)
+            .get(`http://localhost:8080/WebShopAppREST/rest/factories/'${id}`)
             .then(response => {
                 this.factoryName = response.data.name;
             })
@@ -69,21 +69,30 @@ export default {
                 console.error("Error fetching factory details", error);
             });
     },
-    methods: {
-        addChocolate() {
-            const factoryId = this.$route.params.id;
-            axios
-                .post(`http://localhost:8080/WebShopAppREST/rest/factories/${factoryId}/chocolates`, this.newChocolate)
-                .then(response => {
-                    alert('Chocolate added successfully');
-                    this.$router.push({ name: 'FactoryDetails', params: { id: factoryId } });
-                })
-                .catch(error => {
-                    console.error("Error adding chocolate", error);
-                });
-        }
+   methods: {
+    addChocolate() {
+        const factoryId = this.$route.params.id;
+        axios
+            .post(`http://localhost:8080/WebShopAppREST/rest/chocolates`, this.newChocolate)
+            .then(response => {
+                const chocolateId = response.data.id;
+                axios
+                    .put(`http://localhost:8080/WebShopAppREST/rest/factories/${factoryId}/addChocolate/${chocolateId}`)
+                    .then(response => {
+                        alert('Chocolate added successfully');
+                        this.$router.push({ name: 'FactoryDetails', params: { id: factoryId } });
+                    })
+                    .catch(error => {
+                        console.error("Error adding chocolate to factory", error);
+                    });
+            })
+            .catch(error => {
+                console.error("Error adding chocolate", error);
+            });
     }
 }
+}
+
 </script>
 
 <style>
