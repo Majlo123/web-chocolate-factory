@@ -1,0 +1,14 @@
+[
+    {
+        "id": 1,
+        "street": "Rue du Faubourg Saint-Honoré 75008",
+        "city": "Paris",
+        "state": "France"
+    },
+    {
+        "id": 2,
+            "street": "Fohrenburgstrasse 1",
+            "city": "Bludenz",
+            "state" : "Austria"
+    }
+]

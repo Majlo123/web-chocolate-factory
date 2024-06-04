@@ -1,0 +1,62 @@
+[
+    {
+        "id": 1,
+        "name": "Milka",
+        "price": 400,
+        "chocolate_kind": "Dark",
+        "chocolate_type": "Bar",
+        "weight": 270,
+        "description": "Choco-swing biscuit",
+        "image": "chocolate1.jpeg"
+    },
+    {
+        "id": 2,
+        "name": "Kinder",
+        "price": 350,
+        "chocolate_kind": "Milk",
+        "chocolate_type": "Bar",
+        "weight": 270,
+        "description": "With a creamy milky filling",
+        "image": "chocolate2.png"
+    },
+    {
+        "id": 3,
+        "name": "Chocolat Bonnat",
+        "price": 580,
+        "chocolate_kind": "White",
+        "chocolate_type": "Bar",
+        "weight": 290,
+        "description": "Creamy and smooth",
+        "image": "chocolate3.jpg"
+    },
+    {
+        "id": 4,
+        "name": "Bonnat Praline Noisette",
+        "price": 790,
+        "chocolate_kind": "Dark",
+        "chocolate_type": "Pralines",
+        "weight": 300,
+        "description": "55% cocoa",
+        "image": "chocolate4.png"
+    },
+    {
+        "name": "Milka Oreo",
+        "price": 420,
+        "chocolate_kind": "Milk",
+        "chocolate_type": "Bar",
+        "weight": 100,
+        "description": "Alpine Milk Chocolate",
+        "image": "chocolate5.jpg",
+        "id": 5
+    },
+    {
+        "name": "Milka Milk",
+        "price": 200,
+        "chocolate_kind": "Dark",
+        "chocolate_type": "Bar",
+        "weight": 90,
+        "description": "Bubbly Chocolate Bar",
+        "image": "chocolate6.jpg",
+        "id": 6
+    }
+]
