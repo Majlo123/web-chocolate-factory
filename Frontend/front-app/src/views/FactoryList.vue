@@ -3,7 +3,7 @@
         <h1>Chocolate Factories</h1>
         <div v-for="factory in sortedFactories" :key="factory.id" class="factory-card">
             <h2>{{ factory.name }}</h2>
-            <img :src="'/path/to/images/' + factory.logo" alt="Logo" class="factory-logo">
+            <img :src="getLogoPath(factory.logo)" alt="Logo" class="factory-logo">
             <p><strong>Location:</strong> {{ factory.location.street }}, {{ factory.location.city }}, {{ factory.location.state }}</p>
             <p><strong>Average Rating:</strong> {{ factory.averageRating }}</p>
             <p><strong>Working Hours:</strong> {{ factory.workingHours }}</p>
@@ -52,10 +52,19 @@ export default {
         },
         addChocolate(factoryId) {
             this.$router.push({ name: 'AddChocolate', params: { id: factoryId } });
+        },
+        getLogoPath(logo) {
+            try {
+                return require(`../assets/${logo}`);
+            } catch (e) {
+                console.error("Error loading logo image", e);
+                return '';  // Return a default or empty string if image not found
+            }
         }
     }
 }
 </script>
+
 
 <style>
 .factory-card {
