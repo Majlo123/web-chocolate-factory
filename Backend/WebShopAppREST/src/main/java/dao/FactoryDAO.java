@@ -56,6 +56,13 @@ public class FactoryDAO {
     }
 
     public void updateFactory(Factory factory) {
+        for (int i = 0; i < factoryList.size(); i++) {
+            if (factoryList.get(i).getId() == factory.getId()) {
+                factoryList.set(i, factory);
+                break;
+            }
+        }
+
         try (Writer writer = new FileWriter(new File(contextPath, "resources/factories.json"))) {
             Gson gson = new GsonBuilder().setPrettyPrinting().create();
             gson.toJson(factoryList, writer);
@@ -64,6 +71,7 @@ public class FactoryDAO {
             System.out.println("Error updating factory in file: " + e.getMessage());
         }
     }
+
     public void deleteChocolateFromFactory(int chocolateId, int factoryId) {
         Factory factory = getById(factoryId);
         if (factory != null) {

@@ -5,6 +5,7 @@ import java.util.List;
 
 import javax.annotation.PostConstruct;
 import javax.servlet.ServletContext;
+import javax.ws.rs.Consumes;
 import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
 import javax.ws.rs.PUT;
@@ -51,7 +52,27 @@ public class FactoryService {
     	FactoryDAO dao = (FactoryDAO) ctx.getAttribute("factoryDAO");
         return dao.getById(id);
     }
+    @GET
+    @Path("/{factoryId}/chocolates/{chocolateId}")
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response getChocolateById(@PathParam("factoryId") int factoryId, @PathParam("chocolateId") int chocolateId) {
+        FactoryDAO factoryDAO = (FactoryDAO) ctx.getAttribute("factoryDAO");
+        Factory factory = factoryDAO.getById(factoryId);
+
+        if (factory != null) {
+            for (Chocolate chocolate : factory.getChocolates()) {
+                if (chocolate.getId() == chocolateId) {
+                    return Response.status(Response.Status.OK).entity(chocolate).build();
+                }
+            }
+            return Response.status(Response.Status.NOT_FOUND).entity("Chocolate not found").build();
+        } else {
+            return Response.status(Response.Status.NOT_FOUND).entity("Factory not found").build();
+        }
+    }
+
     @PUT
+    @Consumes(MediaType.APPLICATION_JSON)
     @Path("/{factoryId}/addChocolate/{chocolateId}")
     public Response addChocolateToFactory(@PathParam("factoryId") int factoryId, @PathParam("chocolateId") int chocolateId) {
         FactoryDAO factoryDAO = (FactoryDAO) ctx.getAttribute("factoryDAO");
@@ -75,4 +96,38 @@ public class FactoryService {
 		factoryDAO.deleteChocolateFromFactory(chocolateId,factoryId);
 		return Response.ok().build();
     }
+    @PUT
+    @Path("/{factoryId}/chocolates/{chocolateId}")
+    @Consumes(MediaType.APPLICATION_JSON)
+    public Response updateChocolateInFactory(@PathParam("factoryId") int factoryId, @PathParam("chocolateId") int chocolateId, Chocolate updatedChocolate) {
+        FactoryDAO factoryDAO = (FactoryDAO) ctx.getAttribute("factoryDAO");
+        Factory factory = factoryDAO.getById(factoryId);
+
+        if (factory != null) {
+            Chocolate existingChocolate = null;
+            for (Chocolate chocolate : factory.getChocolates()) {
+                if (chocolate.getId() == chocolateId) {
+                    existingChocolate = chocolate;
+                    break;
+                }
+            }
+
+            if (existingChocolate != null) {
+                existingChocolate.setName(updatedChocolate.getName());
+                existingChocolate.setPrice(updatedChocolate.getPrice());
+                existingChocolate.setChocolateKind(updatedChocolate.getChocolateKind());
+                existingChocolate.setChocolateType(updatedChocolate.getChocolateType());
+                existingChocolate.setWeight(updatedChocolate.getWeight());
+                existingChocolate.setDescription(updatedChocolate.getDescription());
+
+                factoryDAO.updateFactory(factory);
+                return Response.status(Response.Status.OK).entity(existingChocolate).build();
+            } else {
+                return Response.status(Response.Status.NOT_FOUND).entity("Chocolate not found").build();
+            }
+        } else {
+            return Response.status(Response.Status.NOT_FOUND).entity("Factory not found").build();
+        }
+    }
+
 }

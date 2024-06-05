@@ -16,10 +16,10 @@
             <p><strong>Description:</strong> {{ chocolate.description }}</p>
             <img :src="'/path/to/images/' + chocolate.image" alt="Chocolate Image" class="chocolate-image">
             <button @click="deleteChocolate(chocolate.id)">Delete Chocolate</button>
+            <button @click="editChocolate(chocolate.id)">Edit Chocolate</button>
         </div>
     </div>
 </template>
-
 
 <script>
 import axios from 'axios';
@@ -33,8 +33,7 @@ export default {
     methods: {
         fetchFactory() {
             const id = this.$route.params.id;
-            axios
-                .get(`http://localhost:8080/WebShopAppREST/rest/factories/${id}`)
+            axios.get(`http://localhost:8080/WebShopAppREST/rest/factories/${id}`)
                 .then(response => {
                     this.factory = response.data;
                 })
@@ -44,37 +43,20 @@ export default {
         },
         deleteChocolate(chocolateId) {
             const factoryId = this.$route.params.id;
-            axios
-                .delete(`http://localhost:8080/WebShopAppREST/rest/factories/${factoryId}/${chocolateId}`)
+            axios.delete(`http://localhost:8080/WebShopAppREST/rest/factories/${factoryId}/${chocolateId}`)
                 .then(() => {
                     this.factory.chocolates = this.factory.chocolates.filter(chocolate => chocolate.id !== chocolateId);
                 })
                 .catch(error => {
                     console.error('Error deleting chocolate', error);
                 });
+        },
+        editChocolate(chocolateId) {
+            this.$router.push({ name: 'EditChocolate', params: { factoryId: this.$route.params.id, chocolateId: chocolateId } });
         }
     },
     mounted() {
         this.fetchFactory();
     }
 };
-
 </script>
-
-<style scoped>
-.factory-logo {
-    width: 100px;
-    height: auto;
-}
-
-.chocolate-card {
-    border: 1px solid #ccc;
-    padding: 10px;
-    margin: 10px 0;
-}
-
-.chocolate-image {
-    width: 100px;
-    height: auto;
-}
-</style>
