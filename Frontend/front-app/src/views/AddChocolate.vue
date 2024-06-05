@@ -1,19 +1,19 @@
 <template>
     <div>
-        <button @click="$router.back()">Back to Factories</button>
+        <button @click="this.$router.push({ name: 'FactoryList'})">Back to Factories</button>
         <h1>Add Chocolate to {{ factoryName }}</h1>
         <form @submit.prevent="addChocolate">
             <div>
                 <label>Name:</label>
-                <input type="text" v-model="newChocolate.name">
+                <input type="text" v-model="newChocolate.name" required>
             </div>
             <div>
                 <label>Price:</label>
-                <input type="number" v-model="newChocolate.price">
+                <input type="number" v-model="newChocolate.price" required>
             </div>
             <div>
                 <label>Chocolate Kind:</label>
-                <select v-model="newChocolate.chocolate_kind">
+                <select v-model="newChocolate.chocolateKind">
                     <option value="White">White</option>
                     <option value="Dark">Dark</option>
                     <option value="Milk">Milk</option>
@@ -21,19 +21,19 @@
             </div>
             <div>
                 <label>Chocolate Type:</label>
-                <input type="text" v-model="newChocolate.chocolate_type">
+                <input type="text" v-model="newChocolate.chocolateType" required>
             </div>
             <div>
                 <label>Weight:</label>
-                <input type="number" v-model="newChocolate.weight">
+                <input type="number" v-model="newChocolate.weight" required>
             </div>
             <div>
                 <label>Description:</label>
-                <textarea v-model="newChocolate.description"></textarea>
+                <textarea v-model="newChocolate.description" required></textarea>
             </div>
             <div>
                 <label>Image:</label>
-                <input type="text" v-model="newChocolate.image">
+                <input type="text" v-model="newChocolate.image" required>
             </div>
             <button type="submit">Add Chocolate</button>
         </form>
@@ -50,8 +50,8 @@ export default {
             newChocolate: {
                 name: '',
                 price: 0,
-                chocolate_kind: 'White',
-                chocolate_type: '',
+                chocolateKind: 'White',
+                chocolateType: '',
                 weight: 0,
                 description: '',
                 image: ''
@@ -69,31 +69,31 @@ export default {
                 console.error("Error fetching factory details", error);
             });
     },
-   methods: {
-    addChocolate() {
-        const factoryId = this.$route.params.id;
-        axios
-            .post(`http://localhost:8080/WebShopAppREST/rest/chocolates`, this.newChocolate)
-            .then(response => {
-                const chocolateId = response.data.id;
-                axios
-                    .put(`http://localhost:8080/WebShopAppREST/rest/factories/${factoryId}/addChocolate/${chocolateId}`)
-                    .then(response => {
-                        alert('Chocolate added successfully');
-                        this.$router.push({ name: 'FactoryDetails', params: { id: factoryId } });
-                    })
-                    .catch(error => {
-                        console.error("Error adding chocolate to factory", error);
-                    });
-            })
-            .catch(error => {
-                console.error("Error adding chocolate", error);
-            });
+    methods: {
+        addChocolate() {
+            const factoryId = this.$route.params.id;
+            axios
+                .post(`http://localhost:8080/WebShopAppREST/rest/chocolates`, this.newChocolate)
+                .then(response => {
+                    const chocolateId = response.data.id;
+                    axios
+                        .put(`http://localhost:8080/WebShopAppREST/rest/factories/${factoryId}/addChocolate/${chocolateId}`)
+                        .then(response => {
+                            alert('Chocolate added successfully');
+                            this.$router.push({ name: 'FactoryDetails', params: { id: factoryId } });
+                        })
+                        .catch(error => {
+                            console.error("Error adding chocolate to factory", error);
+                        });
+                })
+                .catch(error => {
+                    console.error("Error adding chocolate", error);
+                });
+        }
     }
 }
-}
-
 </script>
 
-<style>
+<style scoped>
+/* Add your styles here */
 </style>

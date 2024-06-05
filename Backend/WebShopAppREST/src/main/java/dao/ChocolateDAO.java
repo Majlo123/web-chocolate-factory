@@ -2,6 +2,7 @@ package dao;
 
 import java.io.File;
 import java.io.FileReader;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.io.Reader;
 import java.util.ArrayList;
@@ -14,7 +15,7 @@ import beans.Chocolate;
 
 public class ChocolateDAO {
 
-	private List<Chocolate> chocolateList = new ArrayList<>();
+    private List<Chocolate> chocolateList = new ArrayList<>();
     private String contextPath;
 
     public ChocolateDAO() {}
@@ -30,39 +31,52 @@ public class ChocolateDAO {
     private void loadChocolatesFromFile() {
         try (Reader reader = new FileReader(new File(contextPath, "resources/chocolates.json"))) {
             Gson gson = new Gson();
-            List<Chocolate> loadedLocations = gson.fromJson(reader, new TypeToken<List<Chocolate>>() {}.getType());
+            List<Chocolate> loadedChocolates = gson.fromJson(reader, new TypeToken<List<Chocolate>>() {}.getType());
 
-            if (loadedLocations != null) {
-            	chocolateList.clear(); // Clear existing locations
-            	chocolateList.addAll(loadedLocations);
+            if (loadedChocolates != null) {
+                chocolateList.clear(); // Clear existing chocolates
+                chocolateList.addAll(loadedChocolates);
             }
         } catch (IOException e) {
             e.printStackTrace();
             System.out.println("Error loading chocolates from file: " + e.getMessage());
         }
     }
+
+    private void saveChocolatesToFile() {
+        try (FileWriter writer = new FileWriter(new File(contextPath, "resources/chocolates.json"))) {
+            Gson gson = new Gson();
+            gson.toJson(chocolateList, writer);
+        } catch (IOException e) {
+            e.printStackTrace();
+            System.out.println("Error saving chocolates to file: " + e.getMessage());
+        }
+    }
+
     public Chocolate create(Chocolate chocolate) {
-    	chocolate.setId(nextId());
-		chocolateList.add(chocolate);
-		loadChocolatesFromFile();
-		return chocolate;		
-	}
+        chocolate.setId(nextId());
+        chocolateList.add(chocolate);
+        saveChocolatesToFile();
+        return chocolate;
+    }
+
     public int nextId() {
-		int maxId=-1;
-		for (Chocolate chocolate : chocolateList) {
-            if (maxId<chocolate.getId()) {
-                maxId=chocolate.getId();
+        int maxId = -1;
+        for (Chocolate chocolate : chocolateList) {
+            if (maxId < chocolate.getId()) {
+                maxId = chocolate.getId();
             }
         }
-		maxId++;
-		return maxId;
-	}
-	 public Chocolate getById(int id) {
+        maxId++;
+        return maxId;
+    }
+
+    public Chocolate getById(int id) {
         for (Chocolate chocolate : chocolateList) {
             if (chocolate.getId() == id) {
                 return chocolate;
             }
         }
-        return null; 
+        return null;
     }
 }

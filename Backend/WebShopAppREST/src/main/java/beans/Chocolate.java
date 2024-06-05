@@ -4,18 +4,18 @@ public class Chocolate {
     private int id;
     private String name;
     private int price;
-    private String chocolate_kind;
-    private String chocolate_type;
+    private String chocolateKind;
+    private String chocolateType;
     private int weight;
     private String description;
     private String image;
 
-    public Chocolate(int id, String name, int price, String chocolate_kind, String chocolate_type, int weight, String description, String image) {
+    public Chocolate(int id, String name, int price, String chocolateKind, String chocolateType, int weight, String description, String image) {
         this.id = id;
         this.name = name;
         this.price = price;
-        this.chocolate_kind = chocolate_kind;
-        this.chocolate_type = chocolate_type;
+        this.chocolateKind = chocolateKind;
+        this.chocolateType = chocolateType;
         this.weight = weight;
         this.description = description;
         this.image = image;
@@ -47,19 +47,19 @@ public class Chocolate {
     }
 
     public String getChocolateKind() {
-        return chocolate_kind;
+        return chocolateKind;
     }
 
-    public void setChocolateKind(String chocolate_kind) {
-        this.chocolate_kind = chocolate_kind;
+    public void setChocolateKind(String chocolateKind) {
+        this.chocolateKind = chocolateKind;
     }
 
     public String getChocolateType() {
-        return chocolate_type;
+        return chocolateType;
     }
 
-    public void setChocolateType(String chocolate_type) {
-        this.chocolate_type = chocolate_type;
+    public void setChocolateType(String chocolateType) {
+        this.chocolateType = chocolateType;
     }
 
     public int getWeight() {
