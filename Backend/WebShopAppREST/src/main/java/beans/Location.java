@@ -5,44 +5,71 @@ public class Location {
     private String street;
     private String city;
     private String state;
+    private double latitude;
+    private double longitude;
 
-    public Location(int id, String street, String city, String state) {
+    // Empty constructor
+    public Location() {}
+
+    // Constructor with parameters
+    public Location(int id, String street, String city, String state, double latitude, double longitude) {
         this.id = id;
         this.street = street;
         this.city = city;
         this.state = state;
+        this.latitude = latitude;
+        this.longitude = longitude;
     }
-    public Location() {}
+
+    // Getters
     public int getId() {
         return id;
-    }
-    
-    public void setId(int id) {
-        this.id = id;
     }
 
     public String getStreet() {
         return street;
     }
 
-    public void setStreet(String street) {
-        this.street = street;
-    }
-
     public String getCity() {
         return city;
-    }
-
-    public void setCity(String city) {
-        this.city = city;
     }
 
     public String getState() {
         return state;
     }
 
+    public double getLatitude() {
+        return latitude;
+    }
+
+    public double getLongitude() {
+        return longitude;
+    }
+
+    // Setters
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    public void setStreet(String street) {
+        this.street = street;
+    }
+
+    public void setCity(String city) {
+        this.city = city;
+    }
+
     public void setState(String state) {
         this.state = state;
     }
+
+    public void setLatitude(double latitude) {
+        this.latitude = latitude;
+    }
+
+    public void setLongitude(double longitude) {
+        this.longitude = longitude;
+    }
 }
+
 
