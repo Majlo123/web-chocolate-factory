@@ -5,6 +5,7 @@ import java.util.List;
 
 import javax.annotation.PostConstruct;
 import javax.servlet.ServletContext;
+import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
 import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
@@ -14,9 +15,11 @@ import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
+import beans.Book;
 import beans.Chocolate;
 import beans.Factory;
 import beans.Location;
+import dao.BookDAO;
 import dao.ChocolateDAO;
 import dao.FactoryDAO;
 
@@ -66,5 +69,12 @@ public class FactoryService {
         } else {
             return Response.status(Response.Status.NOT_FOUND).entity("Factory or chocolate not found.").build();
         }
+    }
+    @DELETE
+    @Path("/{factoryId}/{chocolateId}")
+    public Response deleteChocolateFromFactory(@PathParam("factoryId") int factoryId, @PathParam("chocolateId") int chocolateId) {
+    	FactoryDAO factoryDAO = (FactoryDAO) ctx.getAttribute("factoryDAO");
+		factoryDAO.deleteChocolateFromFactory(chocolateId,factoryId);
+		return Response.ok().build();
     }
 }

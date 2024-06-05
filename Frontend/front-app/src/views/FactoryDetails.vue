@@ -15,9 +15,11 @@
             <p><strong>Weight:</strong> {{ chocolate.weight }} g</p>
             <p><strong>Description:</strong> {{ chocolate.description }}</p>
             <img :src="'/path/to/images/' + chocolate.image" alt="Chocolate Image" class="chocolate-image">
+            <button @click="deleteChocolate(chocolate.id)">Delete Chocolate</button>
         </div>
     </div>
 </template>
+
 
 <script>
 import axios from 'axios';
@@ -39,12 +41,24 @@ export default {
                 .catch(error => {
                     console.error('Error fetching factory details', error);
                 });
+        },
+        deleteChocolate(chocolateId) {
+            const factoryId = this.$route.params.id;
+            axios
+                .delete(`http://localhost:8080/WebShopAppREST/rest/factories/${factoryId}/${chocolateId}`)
+                .then(() => {
+                    this.factory.chocolates = this.factory.chocolates.filter(chocolate => chocolate.id !== chocolateId);
+                })
+                .catch(error => {
+                    console.error('Error deleting chocolate', error);
+                });
         }
     },
     mounted() {
         this.fetchFactory();
     }
 };
+
 </script>
 
 <style scoped>

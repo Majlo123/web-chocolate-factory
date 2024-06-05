@@ -13,6 +13,7 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
 
+import beans.Chocolate;
 import beans.Factory;
 
 public class FactoryDAO {
@@ -63,4 +64,22 @@ public class FactoryDAO {
             System.out.println("Error updating factory in file: " + e.getMessage());
         }
     }
-}
+    public void deleteChocolateFromFactory(int chocolateId, int factoryId) {
+        Factory factory = getById(factoryId);
+        if (factory != null) {
+            Chocolate chocolateToRemove = null;
+            for (Chocolate chocolate : factory.getChocolates()) {
+                if (chocolate.getId() == chocolateId) {
+                    chocolateToRemove = chocolate;
+                    break;
+                }
+            }
+            if (chocolateToRemove != null) {
+                factory.getChocolates().remove(chocolateToRemove);
+                updateFactory(factory);
+            }
+        }
+    }
+
+    }
+

@@ -64,7 +64,7 @@ public class BookService {
 		Book deletedBook=dao.deleteByName(name);
 		return Response.ok(deletedBook).build();
 	}
-	
+	+
 	public boolean isBookValid(Book book) {
 		if(book.getName()==null||book.getName().isBlank()) return false;
 		if(book.getAuthor()==null||book.getAuthor().isBlank()) return false;
