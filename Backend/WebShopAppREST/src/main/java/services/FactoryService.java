@@ -15,11 +15,9 @@ import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
-import beans.Book;
 import beans.Chocolate;
 import beans.Factory;
 import beans.Location;
-import dao.BookDAO;
 import dao.ChocolateDAO;
 import dao.FactoryDAO;
 
