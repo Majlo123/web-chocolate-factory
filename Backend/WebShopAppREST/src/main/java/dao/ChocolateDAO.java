@@ -34,7 +34,7 @@ public class ChocolateDAO {
             List<Chocolate> loadedChocolates = gson.fromJson(reader, new TypeToken<List<Chocolate>>() {}.getType());
 
             if (loadedChocolates != null) {
-                chocolateList.clear(); // Clear existing chocolates
+                chocolateList.clear(); 
                 chocolateList.addAll(loadedChocolates);
             }
         } catch (IOException e) {

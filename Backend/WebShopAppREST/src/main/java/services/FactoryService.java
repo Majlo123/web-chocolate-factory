@@ -119,7 +119,7 @@ public class FactoryService {
                 existingChocolate.setChocolateType(updatedChocolate.getChocolateType());
                 existingChocolate.setWeight(updatedChocolate.getWeight());
                 existingChocolate.setDescription(updatedChocolate.getDescription());
-
+                existingChocolate.setImage(updatedChocolate.getImage());
                 factoryDAO.updateFactory(factory);
                 return Response.status(Response.Status.OK).entity(existingChocolate).build();
             } else {

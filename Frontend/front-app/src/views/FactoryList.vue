@@ -1,15 +1,20 @@
 <template>
-    <div>
-        <h1>Chocolate Factories</h1>
+    <div class="container">
+        <h1 class="main-title">Chocolate Factories</h1>
         <div v-for="factory in sortedFactories" :key="factory.id" class="factory-card">
-            <h2>{{ factory.name }}</h2>
-            <img :src="getLogoPath(factory.logo)" alt="Logo" class="factory-logo">
+            <div class="factory-card-header">
+                <h2>{{ factory.name }}</h2>
+                <img :src="getLogoPath(factory.logo)" alt="Logo" class="factory-logo">
+            </div>
             <p><strong>Location:</strong> {{ factory.location.street }}, {{ factory.location.city }}, {{ factory.location.state }}</p>
             <p><strong>Average Rating:</strong> {{ factory.averageRating }}</p>
             <p><strong>Working Hours:</strong> {{ factory.workingHours }}</p>
             <p><strong>Status:</strong> {{ factory.workStatus }}</p>
-            <button @click="viewMore(factory.id)">View More</button>
-            <button @click="addChocolate(factory.id)">Add Chocolate</button>
+            <p><strong>Comments:</strong> {{ factory.comments }}</p>
+            <div class="factory-card-buttons">
+                <button @click="viewMore(factory.id)" class="btn-primary">View More</button>
+                <button @click="addChocolate(factory.id)" class="btn-secondary">Add Chocolate</button>
+            </div>
         </div>
     </div>
 </template>
@@ -65,15 +70,77 @@ export default {
 }
 </script>
 
+<style scoped>
+@import url('https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;600&display=swap');
 
-<style>
-.factory-card {
-    border: 1px solid #ccc;
-    padding: 16px;
-    margin-bottom: 16px;
+.container {
+    font-family: 'Open Sans', sans-serif;
+    background: #f9f9f9;
+    padding: 20px;
 }
+
+.main-title {
+    text-align: center;
+    font-size: 2.5rem;
+    color: #333;
+    margin-bottom: 20px;
+}
+
+.factory-card {
+    background: #fff;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    padding: 20px;
+    margin-bottom: 20px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    transition: transform 0.2s;
+}
+
+.factory-card:hover {
+    transform: scale(1.02);
+}
+
+.factory-card-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
 .factory-logo {
-    width: 100px;
+    width: 80px;
     height: auto;
+}
+
+.factory-card-buttons {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 10px;
+}
+
+.btn-primary, .btn-secondary {
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 1rem;
+}
+
+.btn-primary {
+    background-color: #6b3e26;
+    color: white;
+    margin-right: 10px;
+}
+
+.btn-secondary {
+    background-color: #ddd;
+    color: #333;
+}
+
+.btn-primary:hover {
+    background-color: #552e1a;
+}
+
+.btn-secondary:hover {
+    background-color: #ccc;
 }
 </style>
