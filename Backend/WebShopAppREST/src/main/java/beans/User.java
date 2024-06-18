@@ -1,25 +1,25 @@
 package beans;
 
 
-import java.time.LocalDate;
+import java.util.Date;
 
 public class User {
     private String username;
     private String password;
-    private String firstName;
-    private String lastName;
+    private String first_name;
+    private String last_name;
     private String gender;
-    private LocalDate birthDate;
+    private Date birth_date;
     private String role;
     private Factory factory; // Null if the user is not a manager
 
-    public User(String username, String password, String firstName, String lastName, String gender, LocalDate birthDate, String role, Factory factory) {
+    public User(String username, String password, String first_name, String last_name, String gender, Date birth_date, String role, Factory factory) {
         this.username = username;
         this.password = password;
-        this.firstName = firstName;
-        this.lastName = lastName;
+        this.first_name = first_name;
+        this.last_name = last_name;
         this.gender = gender;
-        this.birthDate = birthDate;
+        this.birth_date = birth_date;
         this.role = role;
         this.factory = "Menadžer".equals(role) ? factory : null;
     }
@@ -42,19 +42,19 @@ public class User {
     }
 
     public String getFirstName() {
-        return firstName;
+        return first_name;
     }
 
-    public void setFirstName(String firstName) {
-        this.firstName = firstName;
+    public void setFirstName(String first_name) {
+        this.first_name = first_name;
     }
 
     public String getLastName() {
-        return lastName;
+        return last_name;
     }
 
-    public void setLastName(String lastName) {
-        this.lastName = lastName;
+    public void setLastName(String last_name) {
+        this.last_name = last_name;
     }
 
     public String getGender() {
@@ -65,12 +65,12 @@ public class User {
         this.gender = gender;
     }
 
-    public LocalDate getBirthDate() {
-        return birthDate;
+    public Date getBirthDate() {
+        return birth_date;
     }
 
-    public void setBirthDate(LocalDate birthDate) {
-        this.birthDate = birthDate;
+    public void setBirthDate(Date birth_date) {
+        this.birth_date = birth_date;
     }
 
     public String getRole() {
@@ -94,17 +94,5 @@ public class User {
         }
     }
 
-    @Override
-    public String toString() {
-        return "User{" +
-                "username='" + username + '\'' +
-                ", password='" + password + '\'' +
-                ", firstName='" + firstName + '\'' +
-                ", lastName='" + lastName + '\'' +
-                ", gender='" + gender + '\'' +
-                ", birthDate=" + birthDate +
-                ", role='" + role + '\'' +
-                ", factory=" + (factory != null ? factory.getName() : "None") +
-                '}';
-    }
+    
 }
