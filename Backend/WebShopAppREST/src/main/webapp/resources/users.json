@@ -1,0 +1,190 @@
+﻿[
+  {
+    "username": "kupac1",
+    "password": "password123",
+    "first_name": "Ivan",
+    "last_name": "Ivić",
+    "gender": "Muški",
+    "birth_date": "1990-01-01",
+    "role": "Kupac"
+  },
+  {
+    "username": "kupac2",
+    "password": "password123",
+    "first_name": "Ana",
+    "last_name": "Anić",
+    "gender": "Ženski",
+    "birth_date": "1985-02-02",
+    "role": "Kupac"
+  },
+  {
+    "username": "radnik1",
+    "password": "password123",
+    "first_name": "Marko",
+    "last_name": "Marković",
+    "gender": "Muški",
+    "birth_date": "1988-03-03",
+    "role": "Radnik"
+  },
+  {
+    "username": "radnik2",
+    "password": "password123",
+    "first_name": "Petra",
+    "last_name": "Petrović",
+    "gender": "Ženski",
+    "birth_date": "1992-04-04",
+    "role": "Radnik"
+  },
+  {
+    "username": "menadzer1",
+    "password": "password123",
+    "first_name": "Jelena",
+    "last_name": "Janković",
+    "gender": "Ženski",
+    "birth_date": "1980-05-05",
+    "role": "Menadžer",
+    "factory": {
+      "id": 1,
+      "name": "Bonnat Chocolates",
+      "location": {
+        "id": 1,
+        "street": "Rue du Faubourg Saint-Honoré 75008",
+        "city": "Paris",
+        "state": "France",
+        "latitude": 48.870848,
+        "longitude": 2.311140
+      },
+      "logo": "factory1.jpg",
+      "averageRating": 8.8,
+      "workingHours": "10:00-16:00",
+      "workStatus": "Closed",
+      "chocolates": [
+        {
+          "id": 3,
+          "name": "Chocolat Bonnat",
+          "price": 580,
+          "chocolateKind": "White",
+          "chocolateType": "Bar",
+          "weight": 290,
+          "description": "Creamy and smooth",
+          "image": "chocolate3.jpg",
+          "status": "In stock",
+          "quantity": 40
+        },
+        {
+          "id": 4,
+          "name": "Bonnat Praline Noisette",
+          "price": 790,
+          "chocolateKind": "Dark",
+          "chocolateType": "Pralines",
+          "weight": 300,
+          "description": "55% cocoa",
+          "image": "chocolate4.png",
+          "status": "In stock",
+          "quantity": 20
+        }
+      ],
+      "comments": "Excellent quality and taste."
+    }
+  },
+  {
+    "username": "menadzer2",
+    "password": "password123",
+    "first_name": "Dragan",
+    "last_name": "Dragić",
+    "gender": "Muški",
+    "birth_date": "1975-06-06",
+    "role": "Menadžer",
+    "factory": {
+      "id": 2,
+      "name": "Milka Läderle",
+      "location": {
+        "id": 2,
+        "street": "Fohrenburgstrasse 1",
+        "city": "Bludenz",
+        "state": "Austria",
+        "latitude": 47.154202,
+        "longitude": 9.819385
+      },
+      "logo": "factory2.png",
+      "averageRating": 7.9,
+      "workingHours": "10:00-17:00",
+      "workStatus": "Closed",
+      "chocolates": [
+        {
+          "id": 1,
+          "name": "Milka",
+          "price": 400,
+          "chocolateKind": "Dark",
+          "chocolateType": "Bar",
+          "weight": 270,
+          "description": "Choco-swing biscuit",
+          "image": "chocolate1.jpeg",
+          "status": "In stock",
+          "quantity": 50
+        },
+        {
+          "id": 5,
+          "name": "Milka Oreo",
+          "price": 420,
+          "chocolateKind": "Milk",
+          "chocolateType": "Bar",
+          "weight": 100,
+          "description": "Alpine Milk Chocolate",
+          "image": "chocolate5.jpg",
+          "status": "Out of stock",
+          "quantity": 0
+        },
+        {
+          "id": 6,
+          "name": "Milka Milk",
+          "price": 200,
+          "chocolateKind": "Dark",
+          "chocolateType": "Bar",
+          "weight": 90,
+          "description": "Bubbly Chocolate Bar",
+          "image": "chocolate6.jpg",
+          "status": "In stock",
+          "quantity": 60
+        }
+      ],
+      "comments": "Popular and widely loved."
+    }
+  },
+  {
+    "username": "administrator1",
+    "password": "password123",
+    "first_name": "Mila",
+    "last_name": "Milić",
+    "gender": "Ženski",
+    "birth_date": "1983-07-07",
+    "role": "Administrator"
+  },
+  {
+    "username": "administrator2",
+    "password": "password123",
+    "first_name": "Nenad",
+    "last_name": "Nenić",
+    "gender": "Muški",
+    "birth_date": "1991-08-08",
+    "role": "Administrator"
+  },
+  {
+    "username": "kupac3",
+    "password": "password123",
+    "first_name": "Sara",
+    "last_name": "Sarić",
+    "gender": "Ženski",
+    "birth_date": "1995-09-09",
+    "role": "Kupac"
+  },
+  {
+    "username": "radnik3",
+    "password": "password123",
+    "first_name": "Nikola",
+    "last_name": "Nikolić",
+    "gender": "Muški",
+    "birth_date": "1987-10-10",
+    "role": "Radnik"
+  }
+]
