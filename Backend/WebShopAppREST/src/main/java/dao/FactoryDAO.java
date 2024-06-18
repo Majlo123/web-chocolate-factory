@@ -7,7 +7,9 @@ import java.io.IOException;
 import java.io.Reader;
 import java.io.Writer;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -45,7 +47,6 @@ public class FactoryDAO {
             System.out.println("Error loading factories from file: " + e.getMessage());
         }
     }
-
     public Factory getById(int id) {
         for (Factory factory : factoryList) {
             if (factory.getId() == id) {

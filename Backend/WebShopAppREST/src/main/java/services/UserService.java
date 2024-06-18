@@ -1,22 +1,23 @@
 package services;
 
 import java.util.Collection;
-
 import javax.annotation.PostConstruct;
 import javax.servlet.ServletContext;
+import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
+import javax.ws.rs.POST;
 import javax.ws.rs.Path;
+import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
-
 import beans.User;
 import dao.UserDAO;
 
 @Path("/users")
 public class UserService {
 
-	@Context
+    @Context
     ServletContext ctx;
 
     public UserService() {}
@@ -33,7 +34,24 @@ public class UserService {
     @Path("/")
     @Produces(MediaType.APPLICATION_JSON)
     public Collection<User> getAllUsers() {
-    	UserDAO dao = (UserDAO) ctx.getAttribute("userDAO");
+        UserDAO dao = (UserDAO) ctx.getAttribute("userDAO");
         return dao.getAll();
+    }
+
+    @GET
+    @Path("/{id}")
+    @Produces(MediaType.APPLICATION_JSON)
+    public User getUserById(@PathParam("id") String id) {
+        UserDAO dao = (UserDAO) ctx.getAttribute("userDAO");
+        return dao.findById(id);
+    }
+
+    @POST
+    @Path("/login")
+    @Produces(MediaType.APPLICATION_JSON)
+    @Consumes(MediaType.APPLICATION_JSON)
+    public User login(User user) {
+        UserDAO dao = (UserDAO) ctx.getAttribute("userDAO");
+        return dao.findByUsernameAndPassword(user.getUsername(), user.getPassword());
     }
 }
