@@ -29,12 +29,15 @@ export default {
   },
   methods: {
     signIn() {
-      axios.get('http://localhost:8080/WebShopAppREST/rest/users/')
+      axios.get('http://localhost:8080/WebShopAppREST/rest/users')
         .then(response => {
           const user = response.data.find(user => user.username === this.username && user.password === this.password);
           if (user) {
-            this.$emit('signIn', user);
-            this.$router.push({ name: 'FactoryList' });
+            if (user.role === 'Menadžer') { // Check if user role is 'Menadžer'
+              this.$router.push({ name: 'FactoryListManager', params: { username: user.username } });
+            } else {
+              this.errorMessage = 'Access denied. You do not have the required role.';
+            }
           } else {
             this.errorMessage = 'Invalid credentials. Please try again.';
           }

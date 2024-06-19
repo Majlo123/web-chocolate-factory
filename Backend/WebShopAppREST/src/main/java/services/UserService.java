@@ -43,7 +43,7 @@ public class UserService {
     @Produces(MediaType.APPLICATION_JSON)
     public User getUserById(@PathParam("id") String id) {
         UserDAO dao = (UserDAO) ctx.getAttribute("userDAO");
-        return dao.findById(id);
+        return dao.getById(id);
     }
 
     @POST
@@ -52,6 +52,6 @@ public class UserService {
     @Consumes(MediaType.APPLICATION_JSON)
     public User login(User user) {
         UserDAO dao = (UserDAO) ctx.getAttribute("userDAO");
-        return dao.findByUsernameAndPassword(user.getUsername(), user.getPassword());
+        return dao.getByUsernameAndPassword(user.getUsername(), user.getPassword());
     }
 }

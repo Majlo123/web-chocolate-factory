@@ -9,6 +9,8 @@ import java.util.Collection;
 import java.util.List;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
+
+import beans.Factory;
 import beans.User;
 
 public class UserDAO {
@@ -21,24 +23,6 @@ public class UserDAO {
     public UserDAO(String contextPath) {
         this.contextPath = contextPath;
         loadUsersFromFile();
-    }
-
-    public Collection<User> getAll() {
-        return usersList;
-    }
-
-    public User findById(String id) {
-        return usersList.stream()
-                .filter(user -> user.getUsername().equals(id))
-                .findFirst()
-                .orElse(null);
-    }
-
-    public User findByUsernameAndPassword(String username, String password) {
-        return usersList.stream()
-                .filter(user -> user.getUsername().equals(username) && user.getPassword().equals(password))
-                .findFirst()
-                .orElse(null);
     }
 
     private void loadUsersFromFile() {
@@ -54,4 +38,28 @@ public class UserDAO {
             System.out.println("Error loading users from file: " + e.getMessage());
         }
     }
+    public Collection<User> getAll() {
+        return usersList;
+    }
+
+    public User getById(String id) {
+        for (User user : getAll()) {
+            if (user.getUsername().equals(id)) {
+                return user;
+            }
+        }
+        return null;
+    }
+
+
+    public User getByUsernameAndPassword(String username, String password) {
+    	for (User user : usersList) {
+            if (user.getUsername().equals(username)&&user.getPassword().equals(password)) {
+                return user;
+            }
+        }
+        return null;
+    }
+
+    
 }

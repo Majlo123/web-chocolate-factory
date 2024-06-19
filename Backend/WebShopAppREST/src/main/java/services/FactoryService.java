@@ -19,9 +19,10 @@ import javax.ws.rs.core.Response;
 import beans.Chocolate;
 import beans.Factory;
 import beans.Location;
+import beans.User;
 import dao.ChocolateDAO;
 import dao.FactoryDAO;
-
+import dao.UserDAO;
 @Path("/factories")
 public class FactoryService {
 
@@ -43,6 +44,15 @@ public class FactoryService {
     @Produces(MediaType.APPLICATION_JSON)
     public List<Factory> getAllLocations() {
     	FactoryDAO dao = (FactoryDAO) ctx.getAttribute("factoryDAO");
+        return dao.getAll();
+    }
+    @GET
+    @Path("/users/{userId}")
+    @Produces(MediaType.APPLICATION_JSON)
+    public List<Factory> getFactoriesByUser(@PathParam("userId") String userId) {
+    	FactoryDAO dao = (FactoryDAO) ctx.getAttribute("factoryDAO");
+    	UserDAO userdao = (UserDAO) ctx.getAttribute("userDAO");
+    	User user=userdao.getById(userId);
         return dao.getAll();
     }
     @GET
@@ -70,7 +80,7 @@ public class FactoryService {
             return Response.status(Response.Status.NOT_FOUND).entity("Factory not found").build();
         }
     }
-
+    
     @PUT
     @Consumes(MediaType.APPLICATION_JSON)
     @Path("/{factoryId}/addChocolate/{chocolateId}")

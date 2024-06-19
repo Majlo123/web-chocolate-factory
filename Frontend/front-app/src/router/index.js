@@ -4,6 +4,7 @@ import FactoryDetails from '../views/FactoryDetails.vue';
 import AddChocolate from '../views/AddChocolate.vue';
 import ChocolateEditComponent from '../views/ChocolateEditComponent.vue';
 import SignIn from '../views/SignIn.vue';
+import FactoryListManager from '../views/FactoryListManager.vue';
 
 const routes = [
   {
@@ -30,6 +31,12 @@ const routes = [
     path: '/factories/:factoryId/chocolates/:chocolateId/edit',
     name: 'EditChocolate',
     component: ChocolateEditComponent,
+    props: true
+  },
+  {
+    path: '/factory-list-manager/:username',
+    name: 'FactoryListManager',
+    component: FactoryListManager,
     props: true
   }
 ];
