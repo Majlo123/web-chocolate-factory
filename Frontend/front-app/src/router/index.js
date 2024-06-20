@@ -24,12 +24,13 @@ const routes = [
     component: FactoryDetails
   },
   {
-    path: '/factories/:id/add',
+    path: '/factories/:factoryId/add/:username',
     name: 'AddChocolate',
-    component: AddChocolate
+    component: AddChocolate,
+    props: true
   },
   {
-    path: '/factories/:factoryId/chocolates/:chocolateId/edit',
+    path: '/factories/:factoryId/users/:username/chocolates/:chocolateId/edit',
     name: 'EditChocolate',
     component: ChocolateEditComponent,
     props: true

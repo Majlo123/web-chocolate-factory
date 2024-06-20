@@ -74,7 +74,7 @@ export default {
         updateChocolate() {
             axios.put(`http://localhost:8080/WebShopAppREST/rest/factories/${this.factoryId}/chocolates/${this.chocolateId}`, this.chocolate)
                 .then(() => {
-                    this.$router.push({ name: 'FactoryDetails', params: { id: this.factoryId } });
+                    this.$router.push({ name: 'FactoryDetailsManager', params: { id: this.factoryId,username:this.$route.params.username} });
                 })
                 .catch(error => {
                     console.error('Error updating chocolate', error);

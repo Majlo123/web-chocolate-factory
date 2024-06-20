@@ -20,7 +20,7 @@
       <p><strong>Comments:</strong> {{ factory.comments }}</p>
       <div class="factory-card-buttons">
         <button @click="viewMore(factory.id)" class="btn-primary">View More</button>
-        <button @click="addChocolate(factory.id)" class="btn-secondary">Add Chocolate</button>
+        
       </div>
     </div>
   </div>

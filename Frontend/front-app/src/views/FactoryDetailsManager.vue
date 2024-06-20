@@ -10,6 +10,9 @@
             <p><strong>Working Hours:</strong> {{ factory.workingHours }}</p>
             <p><strong>Status:</strong> {{ factory.workStatus }}</p>
         </div>
+        <div class="centered-button">
+      <button @click="addChocolate(factory.id)" class="btn-add-chocolate">Add Chocolate</button>
+    </div>
         <h2 class="chocolate-section-title">Chocolates</h2>
         <div v-for="chocolate in factory.chocolates" :key="chocolate.id" class="chocolate-card">
             <p><strong>Name:</strong> {{ chocolate.name }}</p>
@@ -68,7 +71,7 @@ export default {
         });
     },
     editChocolate(chocolateId) {
-      this.$router.push({ name: 'EditChocolate', params: { factoryId: this.$route.params.factoryId, chocolateId: chocolateId } });
+      this.$router.push({ name: 'EditChocolate', params: { factoryId: this.$route.params.factoryId,username:this.$route.params.username,chocolateId: chocolateId } });
     },
     getLogoPath(logo) {
       try {
@@ -80,7 +83,10 @@ export default {
     },
     signOut() {
         this.$router.push({ name: 'FactoryList' });
-      }
+      },
+      addChocolate(factoryId) {
+      this.$router.push({ name: 'AddChocolate', params: { id: factoryId,username:this.$route.params.username} });
+    },
   },
   mounted() {
     this.fetchFactory();
@@ -191,5 +197,25 @@ export default {
 
 .btn-danger:hover {
     background-color: #c0392b;
+}
+.centered-button {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 20px;
+}
+
+.btn-add-chocolate {
+  padding: 15px 30px;
+  background-color: blueviolet;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  font-size: 1.2rem;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.btn-add-chocolate:hover {
+  background-color:blueviolet; 
 }
 </style>

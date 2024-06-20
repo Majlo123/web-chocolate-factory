@@ -17,11 +17,7 @@
             <p><strong>Type:</strong> {{ chocolate.chocolateKind }} - {{ chocolate.chocolateType }}</p>
             <p><strong>Weight:</strong> {{ chocolate.weight }} g</p>
             <p><strong>Description:</strong> {{ chocolate.description }}</p>
-            <p><strong>Quantity:</strong> {{ chocolate.quantity }}</p>
-            <div class="chocolate-card-buttons">
-                <button @click="deleteChocolate(chocolate.id)" class="btn-danger">Delete Chocolate</button>
-                <button @click="editChocolate(chocolate.id)" class="btn-primary">Edit Chocolate</button>
-            </div>
+            <p><strong>Quantity:</strong> {{ chocolate.quantity }}</p>            
         </div>
     </div>
 </template>
@@ -45,20 +41,7 @@ export default {
                 .catch(error => {
                     console.error('Error fetching factory details', error);
                 });
-        },
-        deleteChocolate(chocolateId) {
-            const factoryId = this.$route.params.id;
-            axios.delete(`http://localhost:8080/WebShopAppREST/rest/factories/${factoryId}/${chocolateId}`)
-                .then(() => {
-                    this.factory.chocolates = this.factory.chocolates.filter(chocolate => chocolate.id !== chocolateId);
-                })
-                .catch(error => {
-                    console.error('Error deleting chocolate', error);
-                });
-        },
-        editChocolate(chocolateId) {
-            this.$router.push({ name: 'EditChocolate', params: { factoryId: this.$route.params.id, chocolateId: chocolateId } });
-        },
+        },        
         getLogoPath(logo) {
             try {
                 return require(`../assets/${logo}`);
