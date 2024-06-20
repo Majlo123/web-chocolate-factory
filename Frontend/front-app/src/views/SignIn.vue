@@ -28,26 +28,26 @@ export default {
     };
   },
   methods: {
-    signIn() {
-      axios.get('http://localhost:8080/WebShopAppREST/rest/users')
-        .then(response => {
-          const user = response.data.find(user => user.username === this.username && user.password === this.password);
-          if (user) {
-            if (user.role === 'Menadžer') { // Check if user role is 'Menadžer'
-              this.$router.push({ name: 'FactoryListManager', params: { username: user.username } });
-            } else {
-              this.errorMessage = 'Access denied. You do not have the required role.';
-            }
+  signIn() {
+    axios.get('http://localhost:8080/WebShopAppREST/rest/users')
+      .then(response => {
+        const user = response.data.find(user => user.username === this.username && user.password === this.password);
+        if (user) {
+          if (user.role === 'Menadžer') { 
+            this.$router.push({ name: 'FactoryDetailsManager', params: { username: user.username, factoryId: user.factory.id } });
           } else {
-            this.errorMessage = 'Invalid credentials. Please try again.';
+            this.errorMessage = 'Access denied. You do not have the required role.';
           }
-        })
-        .catch(error => {
-          console.error('Error during sign-in:', error);
-          this.errorMessage = 'An error occurred. Please try again later.';
-        });
-    }
+        } else {
+          this.errorMessage = 'Invalid credentials. Please try again.';
+        }
+      })
+      .catch(error => {
+        console.error('Error during sign-in:', error);
+        this.errorMessage = 'An error occurred. Please try again later.';
+      });
   }
+}
 };
 </script>
 
