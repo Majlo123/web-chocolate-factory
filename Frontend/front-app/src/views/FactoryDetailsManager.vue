@@ -2,6 +2,9 @@
     <div v-if="factory" class="container">
         <span v-if="user">Welcome, {{ user.firstName }} {{ user.lastName }}!</span>
         <button v-if="user" @click="signOut">Sign Out</button>
+        <br>
+        <br>
+        <router-link to="'/sign-up'">Add worker</router-link>
         <h1 class="factory-title">{{ factory.name }}</h1>
         <img :src="getLogoPath(factory.logo)" alt="Logo" class="factory-logo-large">
         <div class="factory-info">
@@ -78,7 +81,7 @@ export default {
         return require(`../assets/${logo}`);
       } catch (e) {
         console.error("Error loading logo image", e);
-        return '';  // Return a default or empty string if image not found
+        return '';  
       }
     },
     signOut() {
@@ -218,4 +221,17 @@ export default {
 .btn-add-chocolate:hover {
   background-color:blueviolet; 
 }
+.header {
+  display: flex;
+  
+  justify-content: space-between;
+  align-items: center;
+}
+
+
+.auth {
+  
+  align-items: center;
+}
+
 </style>

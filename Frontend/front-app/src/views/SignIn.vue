@@ -10,6 +10,9 @@
         <label for="password">Password:</label>
         <input type="password" id="password" v-model="password" required>
       </div>
+      <br>
+      <router-link to="/sign-up">Don't have account? Sign up</router-link>
+      <br>
       <button type="submit">Sign In</button>
     </form>
     <p v-if="errorMessage">{{ errorMessage }}</p>
@@ -35,7 +38,11 @@ export default {
         if (user) {
           if (user.role === 'Menadžer') { 
             this.$router.push({ name: 'FactoryDetailsManager', params: { username: user.username, factoryId: user.factory.id } });
-          } else {
+          }
+          else if(user.role === 'Kupac'){
+            this.$router.push({ name: 'FactoryListManager', params: { username: user.username } });
+          }
+          else {
             this.errorMessage = 'Access denied. You do not have the required role.';
           }
         } else {

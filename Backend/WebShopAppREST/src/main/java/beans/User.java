@@ -1,7 +1,7 @@
 package beans;
 
-
-import java.util.Date;
+import java.time.LocalDate;
+import javax.json.bind.annotation.JsonbDateFormat;
 
 public class User {
     private String username;
@@ -9,11 +9,13 @@ public class User {
     private String first_name;
     private String last_name;
     private String gender;
-    private Date birth_date;
+    @JsonbDateFormat("yyyy-MM-dd")
+    private LocalDate birth_date;
     private String role;
-    private Factory factory; // Null if the user is not a manager
+    private Factory factory; 
 
-    public User(String username, String password, String first_name, String last_name, String gender, Date birth_date, String role, Factory factory) {
+    public User() {}
+    public User(String username, String password, String first_name, String last_name, String gender, LocalDate birth_date, String role, Factory factory) {
         this.username = username;
         this.password = password;
         this.first_name = first_name;
@@ -65,11 +67,11 @@ public class User {
         this.gender = gender;
     }
 
-    public Date getBirthDate() {
+    public LocalDate getBirthDate() {
         return birth_date;
     }
 
-    public void setBirthDate(Date birth_date) {
+    public void setBirthDate(LocalDate birth_date) {
         this.birth_date = birth_date;
     }
 
@@ -93,6 +95,4 @@ public class User {
             this.factory = factory;
         }
     }
-
-    
 }

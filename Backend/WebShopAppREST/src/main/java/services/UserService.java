@@ -11,6 +11,7 @@ import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.Response;
 import beans.User;
 import dao.UserDAO;
 
@@ -53,5 +54,22 @@ public class UserService {
     public User login(User user) {
         UserDAO dao = (UserDAO) ctx.getAttribute("userDAO");
         return dao.getByUsernameAndPassword(user.getUsername(), user.getPassword());
+    }
+
+    @POST
+    @Path("/signup")
+    @Produces(MediaType.APPLICATION_JSON)
+    @Consumes(MediaType.APPLICATION_JSON)
+    public Response signUp(User user) {
+        UserDAO dao = (UserDAO) ctx.getAttribute("userDAO");
+
+
+        if (dao.getById(user.getUsername()) != null) {
+            return Response.status(Response.Status.CONFLICT).entity("Korisničko ime već postoji").build();
+        }
+
+        user.setRole("Kupac");
+        dao.create(user);
+        return Response.status(Response.Status.CREATED).entity(user).build();
     }
 }

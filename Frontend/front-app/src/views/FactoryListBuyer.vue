@@ -63,9 +63,6 @@
       viewMore(factoryId) {
         this.$router.push({ name: 'FactoryDetails', params: { id: factoryId } });
       },
-      addChocolate(factoryId) {
-        this.$router.push({ name: 'AddChocolate', params: { id: factoryId } });
-      },
       getLogoPath(logo) {
         try {
           return require(`../assets/${logo}`);
