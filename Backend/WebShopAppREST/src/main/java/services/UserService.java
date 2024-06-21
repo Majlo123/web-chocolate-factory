@@ -57,18 +57,34 @@ public class UserService {
     }
 
     @POST
-    @Path("/signup")
+    @Path("/signupuser")
     @Produces(MediaType.APPLICATION_JSON)
     @Consumes(MediaType.APPLICATION_JSON)
-    public Response signUp(User user) {
+    public Response signUpUser(User user) {
         UserDAO dao = (UserDAO) ctx.getAttribute("userDAO");
 
 
         if (dao.getById(user.getUsername()) != null) {
-            return Response.status(Response.Status.CONFLICT).entity("Korisničko ime već postoji").build();
+            return Response.status(Response.Status.CONFLICT).entity("Username exists.").build();
         }
 
         user.setRole("Kupac");
+        dao.create(user);
+        return Response.status(Response.Status.CREATED).entity(user).build();
+    }
+    @POST
+    @Path("/signupworker")
+    @Produces(MediaType.APPLICATION_JSON)
+    @Consumes(MediaType.APPLICATION_JSON)
+    public Response signUpWorker(User user) {
+        UserDAO dao = (UserDAO) ctx.getAttribute("userDAO");
+
+
+        if (dao.getById(user.getUsername()) != null) {
+            return Response.status(Response.Status.CONFLICT).entity("Username exists.").build();
+        }
+
+        user.setRole("Radnik");
         dao.create(user);
         return Response.status(Response.Status.CREATED).entity(user).build();
     }

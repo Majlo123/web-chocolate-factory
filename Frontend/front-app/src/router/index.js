@@ -5,6 +5,7 @@ import AddChocolate from '../views/AddChocolate.vue';
 import ChocolateEditComponent from '../views/ChocolateEditComponent.vue';
 import SignIn from '../views/SignIn.vue';
 import SignUp from '../views/SignUp.vue';
+import SignUpWorker from '../views/SignUpWorker.vue';
 import FactoryListManager from '../views/FactoryListBuyer.vue';
 import FactoryDetailsManager from '../views/FactoryDetailsManager.vue';
 
@@ -23,6 +24,11 @@ const routes = [
     path: '/sign-up',
     name: 'SignUp',
     component: SignUp
+  },
+  {
+    path: '/sign-up-worker',
+    name: 'SignUpWorker',
+    component: SignUpWorker
   },
   {
     path: '/factories/:id',

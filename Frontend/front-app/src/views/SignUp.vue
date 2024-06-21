@@ -71,7 +71,7 @@
         }
   
         try {
-          const response = await axios.post('http://localhost:8080/WebShopAppREST/rest/users/signup', {
+          const response = await axios.post('http://localhost:8080/WebShopAppREST/rest/users/signupuser', {
             ...this.newUser,
             birthDate: new Date(this.newUser.birthDate).toISOString().split('T')[0] 
           });
