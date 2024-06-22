@@ -4,7 +4,7 @@
         <button v-if="user" @click="signOut">Sign Out</button>
         <br>
         <br>
-        <router-link :to="{ name: 'SignUpWorker', params: { factoryId: factory.id } }">Add worker</router-link>
+        <router-link to="/sign-up-worker">Add worker</router-link>
         <h1 class="factory-title">{{ factory.name }}</h1>
         <img :src="getLogoPath(factory.logo)" alt="Logo" class="factory-logo-large">
         <div class="factory-info">

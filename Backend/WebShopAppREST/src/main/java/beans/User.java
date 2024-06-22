@@ -23,9 +23,8 @@ public class User {
         this.gender = gender;
         this.birth_date = birth_date;
         this.role = role;
-        this.factory = "Menadžer".equals(role) ? factory : null;
+        this.factory = factory;
     }
-
     // Getters and Setters
     public String getUsername() {
         return username;
@@ -91,8 +90,6 @@ public class User {
     }
 
     public void setFactory(Factory factory) {
-        if ("Menadžer".equals(this.role)) {
             this.factory = factory;
-        }
     }
 }

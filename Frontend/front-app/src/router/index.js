@@ -8,7 +8,7 @@ import SignUp from '../views/SignUp.vue';
 import SignUpWorker from '../views/SignUpWorker.vue';
 import FactoryListManager from '../views/FactoryListBuyer.vue';
 import FactoryDetailsManager from '../views/FactoryDetailsManager.vue';
-
+import FactoryDetailsWorker from '../views/FactoryDetailsWorker.vue';
 const routes = [
   {
     path: '/',
@@ -26,7 +26,7 @@ const routes = [
     component: SignUp
   },
   {
-    path: '/sign-up-worker',
+    path: '/sign-up-worker/:factoryId',
     name: 'SignUpWorker',
     component: SignUpWorker
   },
@@ -57,6 +57,12 @@ const routes = [
     path: '/factory-details-manager/:username/factories/:factoryId',
     name: 'FactoryDetailsManager',
     component: FactoryDetailsManager,
+    props: true
+  },
+  {
+    path: '/factory-details-worker/:username/factories/:factoryId',
+    name: 'FactoryDetailsWorker',
+    component: FactoryDetailsWorker,
     props: true
   }
 ];
