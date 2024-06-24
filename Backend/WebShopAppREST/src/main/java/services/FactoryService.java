@@ -109,7 +109,8 @@ public class FactoryService {
     @PUT
     @Path("/{factoryId}/chocolates/{chocolateId}")
     @Consumes(MediaType.APPLICATION_JSON)
-    public Response updateChocolateInFactory(@PathParam("factoryId") int factoryId, @PathParam("chocolateId") int chocolateId, Chocolate updatedChocolate) {
+    public Response updateChocolateInFactory(@PathParam("factoryId") int factoryId, @PathParam("chocolateId") int chocolateId, Chocolate updatedChocolate) 
+    {
         FactoryDAO factoryDAO = (FactoryDAO) ctx.getAttribute("factoryDAO");
         Factory factory = factoryDAO.getById(factoryId);
 
@@ -139,5 +140,31 @@ public class FactoryService {
             return Response.status(Response.Status.NOT_FOUND).entity("Factory not found").build();
         }
     }
+    
+    @PUT
+    @Path("/{factoryId}/chocolatequantity/{chocolateId}")
+    @Consumes(MediaType.APPLICATION_JSON)
+    public Response updateChocolateQuantity(@PathParam("factoryId") int factoryId, @PathParam("chocolateId") int chocolateId, Chocolate updatedChocolate) {
+        FactoryDAO factoryDAO = (FactoryDAO) ctx.getAttribute("factoryDAO");
+        Factory factory = factoryDAO.getById(factoryId);
 
+        if (factory != null) {
+            Chocolate existingChocolate = null;
+            for (Chocolate chocolate : factory.getChocolates()) {
+                if (chocolate.getId() == chocolateId) {
+                    existingChocolate = chocolate;
+                    break;
+                }
+            }
+            if (existingChocolate != null) {                
+                existingChocolate.setQuantity(updatedChocolate.getQuantity());
+                factoryDAO.updateFactory(factory);
+                return Response.status(Response.Status.OK).entity(existingChocolate).build();
+            } else {
+                return Response.status(Response.Status.NOT_FOUND).entity("Chocolate not found").build();
+            }
+        } else {
+            return Response.status(Response.Status.NOT_FOUND).entity("Factory not found").build();
+        }
+    }
 }
