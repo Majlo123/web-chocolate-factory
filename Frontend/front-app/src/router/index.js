@@ -6,7 +6,9 @@ import ChocolateEditComponent from '../views/ChocolateEditComponent.vue';
 import SignIn from '../views/SignIn.vue';
 import SignUp from '../views/SignUp.vue';
 import SignUpWorker from '../views/SignUpWorker.vue';
-import FactoryListManager from '../views/FactoryListBuyer.vue';
+import FactoryListManager from '../views/FactoryListManager.vue';
+import FactoryListBuyer from '../views/FactoryListBuyer.vue';
+import FactoryListWorker from '../views/FactoryListWorker.vue';
 import FactoryDetailsManager from '../views/FactoryDetailsManager.vue';
 import FactoryDetailsWorker from '../views/FactoryDetailsWorker.vue';
 const routes = [
@@ -48,9 +50,21 @@ const routes = [
     props: true
   },
   {
-    path: '/factory-list-manager/:username',
+    path: '/factory-list-manager/:username/factories/:factoryId',
     name: 'FactoryListManager',
     component: FactoryListManager,
+    props: true
+  },
+  {
+    path: '/factory-list-worker/:username/factories/:factoryId',
+    name: 'FactoryListWorker',
+    component: FactoryListWorker,
+    props: true
+  },
+  {
+    path: '/factory-list-buyer/:username',
+    name: 'FactoryListBuyer',
+    component: FactoryListBuyer,
     props: true
   },
   {

@@ -1,8 +1,15 @@
 <template>
   <div v-if="factory" class="container">
-      <span v-if="user">Welcome, {{ user.firstName }} {{ user.lastName }}!</span>
-      <button v-if="user" @click="signOut">Sign Out</button>
-      <h1 class="factory-title">{{ factory.name }}</h1>
+    <header class="header">
+      <h1 class="main-title">Factory Details</h1>
+      <router-link 
+          v-if="user && selectedFactoryId" 
+          :to="{ name: 'FactoryListWorker', params: { username: user.username, factoryId: selectedFactoryId } }">Home</router-link>
+      <div class="auth">
+        <span v-if="user">Welcome, {{ user.firstName }} {{ user.lastName }}!</span>
+        <button v-if="user" @click="signOut">Sign Out</button>
+      </div>
+    </header>
       <img :src="getLogoPath(factory.logo)" alt="Logo" class="factory-logo-large">
       <div class="factory-info">
           <p><strong>Location:</strong> {{ factory.location.street }}, {{ factory.location.city }}, {{ factory.location.state }}</p>
@@ -34,12 +41,14 @@
 import axios from 'axios';
 
 export default {
-data() {
-  return {
-    factory: null,
-    user: null
-  };
-},
+  props: ['username', 'factoryId'],
+  data() {
+    return {
+      factory: null,
+      user: null,
+      selectedFactoryId: this.factoryId || null
+    };
+  },
 methods: {
   fetchUser() {
     axios.get(`http://localhost:8080/WebShopAppREST/rest/users`)
@@ -107,18 +116,39 @@ mounted() {
   padding: 20px;
 }
 
-.btn-back {
-  margin-bottom: 20px;
-  padding: 10px 20px;
-  background-color: #ddd;
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.main-title {
+  font-size: 2.5rem;
   color: #333;
+}
+
+.auth {
+  display: flex;
+  align-items: center;
+}
+
+.auth span {
+  margin-right: 20px;
+  font-size: 1rem;
+  color: #333;
+}
+
+.auth button {
+  background-color: #6b3e26;
+  color: white;
   border: none;
+  padding: 10px 20px;
   border-radius: 5px;
   cursor: pointer;
 }
 
-.btn-back:hover {
-  background-color: #ccc;
+.auth button:hover {
+  background-color: #552e1a;
 }
 
 .factory-title {
@@ -200,55 +230,37 @@ mounted() {
 .btn-danger:hover {
   background-color: #c0392b;
 }
+
 .centered-button {
-display: flex;
-justify-content: center;
-margin-bottom: 20px;
+  display: flex;
+  justify-content: center;
+  margin-bottom: 20px;
 }
 
 .btn-add-chocolate {
-padding: 15px 30px;
-background-color: blueviolet;
-color: white;
-border: none;
-border-radius: 5px;
-font-size: 1.2rem;
-cursor: pointer;
-transition: background-color 0.3s ease;
+  padding: 15px 30px;
+  background-color: blueviolet;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  font-size: 1.2rem;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
 }
 
 .btn-add-chocolate:hover {
-background-color:blueviolet; 
+  background-color: blueviolet;
 }
-.header {
-display: flex;
-
-justify-content: space-between;
-align-items: center;
-}
-
-
-.auth {
-
-align-items: center;
-}
-
-.quantity-input {
-width: 60px;
-padding: 5px;
-font-size: 1rem;
-margin-left: 10px;
-}
-
 .edit-button {
-background: none;
-border: none;
-cursor: pointer;
-margin-left: 10px;
+  background: none;
+  border: none;
+  cursor: pointer;
+  margin-left: 10px;
 }
 
 .edit-icon {
-width: 20px;
-height: auto;
+  width: 20px;
+  height: auto;
 }
 </style>
+

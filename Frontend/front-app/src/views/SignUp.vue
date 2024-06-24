@@ -76,7 +76,7 @@
             birthDate: new Date(this.newUser.birthDate).toISOString().split('T')[0] 
           });
           alert('Registration successful!');
-          this.$router.push({ name: 'FactoryListManager', params: { username: this.newUser.username } });
+          this.$router.push({ name: 'FactoryListBuyer', params: { username: this.newUser.username } });
         } catch (error) {
           if (error.response && error.response.data) {
             this.errorMessage = error.response.data;

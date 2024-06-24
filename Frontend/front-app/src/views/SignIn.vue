@@ -37,13 +37,13 @@ export default {
         const user = response.data.find(user => user.username === this.username && user.password === this.password);
         if (user) {
           if (user.role === 'Menadžer') { 
-            this.$router.push({ name: 'FactoryDetailsManager', params: { username: user.username, factoryId: user.factory.id } });
+            this.$router.push({ name: 'FactoryListManager', params: { username: user.username, factoryId: user.factory.id } });
           }
           else if(user.role === 'Kupac'){
-            this.$router.push({ name: 'FactoryListManager', params: { username: user.username } });
+            this.$router.push({ name: 'FactoryListBuyer', params: { username: user.username } });
           }
           else if (user.role === 'Radnik') { 
-            this.$router.push({ name: 'FactoryDetailsWorker', params: { username: user.username, factoryId: user.factory.id } });
+            this.$router.push({ name: 'FactoryListWorker', params: { username: user.username, factoryId: user.factory.id } });
           }
           else {
             this.errorMessage = 'Access denied. You do not have the required role.';
