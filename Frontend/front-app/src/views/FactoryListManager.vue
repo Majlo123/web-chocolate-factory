@@ -31,7 +31,6 @@
         <p><strong>Comments:</strong> {{ factory.comments }}</p>
         <div class="factory-card-buttons">
           <button @click.stop="viewMore(factory.id)" class="btn-primary">View More</button>
-          <button @click.stop="addChocolate(factory.id)" class="btn-secondary">Add Chocolate</button>
         </div>
       </div>
     </div>
@@ -74,7 +73,7 @@
       },
       viewMore(factoryId) {
       this.$router.push({
-        name: 'FactoryDetails',
+        name: 'DetailsFactoryManager',
         params: { id: factoryId, username: this.user.username }
       });
     },

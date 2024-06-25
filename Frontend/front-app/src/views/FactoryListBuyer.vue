@@ -60,7 +60,7 @@
           });
       },
       viewMore(factoryId) {
-        this.$router.push({ name: 'FactoryDetails', params: { id: factoryId,username:this.user.username} });
+        this.$router.push({ name: 'DetailsFactoryBuyer', params: { id: factoryId,username:this.user.username} });
       },
       getLogoPath(logo) {
         try {

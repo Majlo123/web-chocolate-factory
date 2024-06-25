@@ -4,7 +4,6 @@
         <h1 class="main-title">Chocolate Factories</h1>
         <div class="auth">
           <span v-if="user">Welcome, {{ user.firstName }} {{ user.lastName }}!</span>
-          <router-link v-else to="/sign-in">Sign In</router-link>
           <button v-if="user" @click="signOut">Sign Out</button>
         </div>
       </div>
@@ -60,7 +59,7 @@
           });
       },
       viewMore(factoryId) {
-        this.$router.push({ name: 'FactoryDetails', params: { id: factoryId,username:this.user.username} });
+        this.$router.push({ name: 'DetailsFactoryAdministrator', params: { id: factoryId,username:this.user.username} });
       },
       getLogoPath(logo) {
         try {

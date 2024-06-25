@@ -1,6 +1,10 @@
 import { createRouter, createWebHashHistory } from 'vue-router';
 import FactoryList from '../views/FactoryList.vue';
 import FactoryDetails from '../views/FactoryDetails.vue';
+import DetailsFactoryAdministrator from '../views/DetailsFactoryAdministrator.vue';
+import DetailsFactoryManager from '../views/DetailsFactoryManager.vue';
+import DetailsFactoryWorker from '../views/DetailsFactoryWorker.vue';
+import DetailsFactoryBuyer from '../views/DetailsFactoryBuyer.vue';
 import AddChocolate from '../views/AddChocolate.vue';
 import ChocolateEditComponent from '../views/ChocolateEditComponent.vue';
 import SignIn from '../views/SignIn.vue';
@@ -40,6 +44,31 @@ const routes = [
     path: '/factories/:id/users/:username',
     name: 'FactoryDetails',
     component: FactoryDetails
+  },
+  {
+    path: '/factories/:id/users/:username',
+    name: 'DetailsFactoryAdministrator',
+    component: DetailsFactoryAdministrator
+  },
+  {
+    path: '/factories/:id/users/:username',
+    name: 'DetailsFactoryBuyer',
+    component: DetailsFactoryBuyer
+  },
+  {
+    path: '/factories/:id/users/:username',
+    name: 'DetailsFactoryManager',
+    component: DetailsFactoryManager
+  },
+  {
+    path: '/factories/:id/users/:username',
+    name: 'DetailsFactoryBuyer',
+    component: DetailsFactoryBuyer
+  },
+  {
+    path: '/factories/:id/users/:username',
+    name: 'DetailsFactoryWorker',
+    component: DetailsFactoryWorker
   },
   {
     path: '/factories/:factoryId/add/:username',

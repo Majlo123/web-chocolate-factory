@@ -73,7 +73,7 @@ export default {
     },
     viewMore(factoryId) {
       this.$router.push({
-        name: 'FactoryDetails',
+        name: 'DetailsFactoryWorker',
         params: { id: factoryId, username: this.user.username }
       });
     },
