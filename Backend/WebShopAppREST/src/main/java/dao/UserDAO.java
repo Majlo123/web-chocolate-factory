@@ -5,6 +5,7 @@ import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.Reader;
+import java.io.Writer;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -16,7 +17,6 @@ import com.google.gson.reflect.TypeToken;
 import com.google.gson.TypeAdapter;
 import com.google.gson.stream.JsonReader;
 import com.google.gson.stream.JsonWriter;
-import java.io.IOException;
 import java.time.format.DateTimeFormatter;
 
 import beans.User;
@@ -75,12 +75,24 @@ public class UserDAO {
         try (FileWriter writer = new FileWriter(new File(contextPath, "resources/users.json"))) {
             Gson gson = new GsonBuilder()
                 .registerTypeAdapter(LocalDate.class, new LocalDateAdapter())
+                .setPrettyPrinting()
                 .create();
             gson.toJson(usersList, writer);
         } catch (IOException e) {
             e.printStackTrace();
             System.out.println("Error saving users to file: " + e.getMessage());
         }
+    }
+
+    public void updateUser(User user) {
+        for (int i = 0; i < usersList.size(); i++) {
+            if (usersList.get(i).getUsername().equals(user.getUsername())) {
+                usersList.set(i, user);
+                break;
+            }
+        }
+
+        saveUsersToFile();
     }
 
     public User create(User user) {

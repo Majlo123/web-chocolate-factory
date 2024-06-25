@@ -4,9 +4,15 @@
         <h1 class="main-title">Chocolate Factories</h1>
         <router-link 
           v-if="user && selectedFactoryId" 
+          :to="{ name: 'FactoryListManager', params: { username: user.username, factoryId: selectedFactoryId } }">Home</router-link>
+        <router-link 
+          v-if="user && selectedFactoryId" 
           :to="{ name: 'FactoryDetailsManager', params: { username: user.username, factoryId: selectedFactoryId } }">
           Edit factory
         </router-link>
+        <router-link 
+          v-if="user && selectedFactoryId" 
+          :to="{ name: 'ViewProfileManager', params: { username: user.username, factoryId: selectedFactoryId } }">View Profile</router-link>
         <div class="auth">
           <span v-if="user">Welcome, {{ user.firstName }} {{ user.lastName }}!</span>
           <router-link v-else to="/sign-in">Sign In</router-link>
@@ -67,8 +73,11 @@
           });
       },
       viewMore(factoryId) {
-        this.$router.push({ name: 'FactoryDetails', params: { id: factoryId } });
-      },
+      this.$router.push({
+        name: 'FactoryDetails',
+        params: { id: factoryId, username: this.user.username }
+      });
+    },
       addChocolate(factoryId) {
         this.$router.push({ name: 'AddChocolate', params: { id: factoryId, username: this.username } });
       },

@@ -45,8 +45,8 @@ export default {
           else if (user.role === 'Radnik') { 
             this.$router.push({ name: 'FactoryListWorker', params: { username: user.username, factoryId: user.factory.id } });
           }
-          else {
-            this.errorMessage = 'Access denied. You do not have the required role.';
+          else if (user.role === 'Administrator') { 
+            this.$router.push({ name: 'FactoryListAdministrator', params: { username: user.username} });
           }
         } else {
           this.errorMessage = 'Invalid credentials. Please try again.';

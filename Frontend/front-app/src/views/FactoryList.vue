@@ -52,7 +52,7 @@ export default {
         });
     },
     viewMore(factoryId) {
-      this.$router.push({ name: 'FactoryDetails', params: { id: factoryId } });
+      this.$router.push({ name: 'FactoryDetails', params: { id: factoryId,username:2} });
     },
     addChocolate(factoryId) {
       this.$router.push({ name: 'AddChocolate', params: { id: factoryId } });
@@ -62,7 +62,7 @@ export default {
         return require(`../assets/${logo}`);
       } catch (e) {
         console.error("Error loading logo image", e);
-        return '';  // Return a default or empty string if image not found
+        return '';  
       }
     },
     signOut() {

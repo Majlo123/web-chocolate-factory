@@ -9,8 +9,12 @@ import SignUpWorker from '../views/SignUpWorker.vue';
 import FactoryListManager from '../views/FactoryListManager.vue';
 import FactoryListBuyer from '../views/FactoryListBuyer.vue';
 import FactoryListWorker from '../views/FactoryListWorker.vue';
+import FactoryListAdministrator from '../views/FactoryListAdministrator.vue';
 import FactoryDetailsManager from '../views/FactoryDetailsManager.vue';
 import FactoryDetailsWorker from '../views/FactoryDetailsWorker.vue';
+import ViewProfileManager from '../views/ViewProfileManager.vue';
+import ViewProfileWorker from '../views/ViewProfileWorker.vue';
+import ViewProfileAdministrator from '../views/ViewProfileAdministrator.vue';
 const routes = [
   {
     path: '/',
@@ -33,7 +37,7 @@ const routes = [
     component: SignUpWorker
   },
   {
-    path: '/factories/:id',
+    path: '/factories/:id/users/:username',
     name: 'FactoryDetails',
     component: FactoryDetails
   },
@@ -62,6 +66,12 @@ const routes = [
     props: true
   },
   {
+    path: '/factory-list-administrator/:username',
+    name: 'FactoryListAdministrator',
+    component: FactoryListAdministrator,
+    props: true
+  },
+  {
     path: '/factory-list-buyer/:username',
     name: 'FactoryListBuyer',
     component: FactoryListBuyer,
@@ -77,6 +87,18 @@ const routes = [
     path: '/factory-details-worker/:username/factories/:factoryId',
     name: 'FactoryDetailsWorker',
     component: FactoryDetailsWorker,
+    props: true
+  },
+  {
+    path: '/view-profile-manager/:username/factories/:factoryId',
+    name: 'ViewProfileManager',
+    component: ViewProfileManager,
+    props: true
+  },
+  {
+    path: '/view-profile-worker/:username/factories/:factoryId',
+    name: 'ViewProfileWorker',
+    component: ViewProfileWorker,
     props: true
   }
 ];

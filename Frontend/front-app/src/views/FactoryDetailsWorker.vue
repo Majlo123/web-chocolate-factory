@@ -5,6 +5,14 @@
       <router-link 
           v-if="user && selectedFactoryId" 
           :to="{ name: 'FactoryListWorker', params: { username: user.username, factoryId: selectedFactoryId } }">Home</router-link>
+        <router-link 
+          v-if="user && selectedFactoryId" 
+          :to="{ name: 'FactoryDetailsWorker', params: { username: user.username, factoryId: selectedFactoryId } }">
+          Edit factory
+        </router-link>
+        <router-link 
+          v-if="user && selectedFactoryId" 
+          :to="{ name: 'ViewProfileWorker', params: { username: user.username, factoryId: selectedFactoryId } }">View Profile</router-link>
       <div class="auth">
         <span v-if="user">Welcome, {{ user.firstName }} {{ user.lastName }}!</span>
         <button v-if="user" @click="signOut">Sign Out</button>
