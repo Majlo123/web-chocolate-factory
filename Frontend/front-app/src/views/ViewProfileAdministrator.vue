@@ -3,16 +3,16 @@
       <header class="header">
         <h1 class="main-title">User information</h1>
         <router-link 
-          v-if="user"
-          :to="{ name: 'FactoryListManager', params: { username: user.username, factoryId: selectedFactoryId } }">Home</router-link>
+          v-if="user" 
+          :to="{ name: 'FactoryListAdministrator', params: { username: user.username, factoryId: selectedFactoryId } }">Home</router-link>
         <router-link 
-          v-if="user"
-          :to="{ name: 'FactoryDetailsManager', params: { username: user.username, factoryId: selectedFactoryId } }">
-          Edit factory
+          v-if="user" 
+          :to="{ name: 'AddFactory', params: { username: user.username} }">
+          Add factory
         </router-link>
         <router-link 
-          v-if="user"
-          :to="{ name: 'ViewProfile', params: { username: user.username, factoryId: selectedFactoryId } }">View Profile</router-link>
+          v-if="user" 
+          :to="{ name: 'ViewProfileAdministrator', params: { username: user.username} }">View Profile</router-link>
         <div class="auth">
           <span v-if="user">Welcome, {{ user.firstName }} {{ user.lastName }}!</span>
           <router-link v-else to="/sign-in">Sign In</router-link>

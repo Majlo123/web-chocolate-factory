@@ -19,6 +19,7 @@ import com.google.gson.stream.JsonReader;
 import com.google.gson.stream.JsonWriter;
 import java.time.format.DateTimeFormatter;
 
+import beans.Factory;
 import beans.User;
 
 public class UserDAO {
@@ -99,6 +100,26 @@ public class UserDAO {
         usersList.add(user);
         saveUsersToFile();
         return user;
+    }
+
+    public List<User> getManagersWithoutFactory() {
+        List<User> managersWithoutFactory = new ArrayList<>();
+        for (User user : usersList) {
+            if ("Menadžer".equals(user.getRole()) && user.getFactory() == null) {
+                managersWithoutFactory.add(user);
+            }
+        }
+        return managersWithoutFactory;
+    }
+
+    public void assignFactoryToManager(String username, Factory factory) {
+        for (User user : usersList) {
+            if (user.getUsername().equals(username)) {
+                user.setFactory(factory);
+                updateUser(user);
+                break;
+            }
+        }
     }
 
     private static class LocalDateAdapter extends TypeAdapter<LocalDate> {

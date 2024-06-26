@@ -2,20 +2,10 @@
     <div class="container">
       <div class="header">
         <h1 class="main-title">Chocolate Factories</h1>
-        <router-link 
-          v-if="user" 
-          :to="{ name: 'FactoryListAdministrator', params: { username: user.username, factoryId: selectedFactoryId } }">Home</router-link>
-        <router-link 
-          v-if="user" 
-          :to="{ name: 'AddFactory', params: { username: user.username} }">
-          Add factory
-        </router-link>
-        <router-link 
-          v-if="user" 
-          :to="{ name: 'ViewProfileAdministrator', params: { username: user.username} }">View Profile</router-link>
         <div class="auth">
-          <span v-if="user">Welcome, {{ user.firstName }} {{ user.lastName }}!</span>
-          <button v-if="user" @click="signOut">Sign Out</button>
+          <span v-if="loggedInUser">Welcome, {{ loggedInUser.first_name }}!</span>
+          <router-link v-else to="/sign-in">Sign In</router-link>
+          <button v-if="loggedInUser" @click="signOut">Sign Out</button>
         </div>
       </div>
       <div v-for="factory in sortedFactories" :key="factory.id" class="factory-card">
@@ -30,6 +20,7 @@
         <p><strong>Comments:</strong> {{ factory.comments }}</p>
         <div class="factory-card-buttons">
           <button @click="viewMore(factory.id)" class="btn-primary">View More</button>
+          <button @click="deleteFactory(factory.id)" class="btn-danger">Delete Factory</button>
         </div>
       </div>
     </div>
@@ -39,48 +30,54 @@
   import axios from 'axios';
   
   export default {
-    props: ['username'],
     data() {
       return {
         factories: [],
-        user: null
+        loggedInUser: null
       };
     },
     mounted() {
-      this.fetchUser();
       this.fetchFactories();
+      this.loggedInUser = JSON.parse(localStorage.getItem('loggedInUser'));
     },
     methods: {
-      fetchUser() {
-        axios.get(`http://localhost:8080/WebShopAppREST/rest/users`)
-          .then(response => {
-            this.user = response.data.find(user => user.username === this.username);
-          })
-          .catch(error => {
-            console.error('Error fetching user details', error);
-          });
-      },
       fetchFactories() {
-        axios.get('http://localhost:8080/WebShopAppREST/rest/factories')
+        axios
+          .get('http://localhost:8080/WebShopAppREST/rest/factories')
           .then(response => {
             this.factories = response.data;
           })
           .catch(error => {
-            console.error('Error fetching factories', error);
+            console.error("Error fetching factories", error);
           });
       },
+      deleteFactory(factoryId) {
+    axios.delete(`http://localhost:8080/WebShopAppREST/rest/factories/${factoryId}`)
+      .then(() => {
+        alert('Factory deleted successfully');
+        this.fetchFactories();
+      })
+      .catch(error => {
+        console.error('Error deleting factory', error);
+      });
+  },
       viewMore(factoryId) {
-        this.$router.push({ name: 'DetailsFactoryAdministrator', params: { id: factoryId,username:this.user.username} });
+        this.$router.push({ name: 'FactoryDetails', params: { id: factoryId,username:2} });
+      },
+      addChocolate(factoryId) {
+        this.$router.push({ name: 'AddChocolate', params: { id: factoryId } });
       },
       getLogoPath(logo) {
         try {
           return require(`../assets/${logo}`);
         } catch (e) {
-          console.error('Error loading logo image', e);
+          console.error("Error loading logo image", e);
           return '';  
         }
       },
       signOut() {
+        localStorage.removeItem('loggedInUser');
+        this.loggedInUser = null;
         this.$router.push({ name: 'FactoryList' });
       }
     },
@@ -150,16 +147,22 @@
     border-radius: 8px;
     padding: 20px;
     margin-bottom: 20px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    transition: transform 0.2s;
+  }
+  
+  .factory-card:hover {
+    transform: scale(1.02);
   }
   
   .factory-card-header {
     display: flex;
-    justify-content: space-between;
     align-items: center;
+    justify-content: space-between;
   }
   
   .factory-logo {
-    width: 100px;
+    width: 80px;
     height: auto;
   }
   
@@ -180,6 +183,7 @@
   .btn-primary {
     background-color: #6b3e26;
     color: white;
+    margin-right: 10px;
   }
   
   .btn-secondary {

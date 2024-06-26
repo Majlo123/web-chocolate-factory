@@ -1,11 +1,13 @@
 import { createRouter, createWebHashHistory } from 'vue-router';
 import FactoryList from '../views/FactoryList.vue';
+import UserList from '../views/UserList.vue';
 import FactoryDetails from '../views/FactoryDetails.vue';
 import DetailsFactoryAdministrator from '../views/DetailsFactoryAdministrator.vue';
 import DetailsFactoryManager from '../views/DetailsFactoryManager.vue';
 import DetailsFactoryWorker from '../views/DetailsFactoryWorker.vue';
 import DetailsFactoryBuyer from '../views/DetailsFactoryBuyer.vue';
 import AddChocolate from '../views/AddChocolate.vue';
+import AddFactory from '../views/AddFactory.vue';
 import ChocolateEditComponent from '../views/ChocolateEditComponent.vue';
 import SignIn from '../views/SignIn.vue';
 import SignUp from '../views/SignUp.vue';
@@ -46,6 +48,11 @@ const routes = [
     component: FactoryDetails
   },
   {
+    path: '/users/:username',
+    name: 'UserList',
+    component: UserList
+  },
+  {
     path: '/factories/:id/users/:username',
     name: 'DetailsFactoryAdministrator',
     component: DetailsFactoryAdministrator
@@ -74,6 +81,12 @@ const routes = [
     path: '/factories/:factoryId/add/:username',
     name: 'AddChocolate',
     component: AddChocolate,
+    props: true
+  },
+  {
+    path: '/add/:username',
+    name: 'AddFactory',
+    component: AddFactory,
     props: true
   },
   {
@@ -128,6 +141,12 @@ const routes = [
     path: '/view-profile-worker/:username/factories/:factoryId',
     name: 'ViewProfileWorker',
     component: ViewProfileWorker,
+    props: true
+  },
+  {
+    path: '/view-profile-administrator/:username',
+    name: 'ViewProfileAdministrator',
+    component: ViewProfileAdministrator,
     props: true
   }
 ];

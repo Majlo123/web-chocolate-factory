@@ -96,7 +96,6 @@ public class UserService {
     public Response signUpUser(User user) {
         UserDAO dao = (UserDAO) ctx.getAttribute("userDAO");
 
-
         if (dao.getById(user.getUsername()) != null) {
             return Response.status(Response.Status.CONFLICT).entity("Username exists.").build();
         }
@@ -105,6 +104,34 @@ public class UserService {
         dao.create(user);
         return Response.status(Response.Status.CREATED).entity(user).build();
     }
+
+    @PUT
+    @Path("/{username}/assignFactory/{factoryId}")
+    @Consumes(MediaType.APPLICATION_JSON)
+    public Response assignFactoryToManager(@PathParam("username") String username, @PathParam("factoryId") int factoryId) {
+        UserDAO userDAO = (UserDAO) ctx.getAttribute("userDAO");
+        FactoryDAO factoryDAO = (FactoryDAO) ctx.getAttribute("factoryDAO");
+
+        User manager = userDAO.getById(username);
+        Factory factory = factoryDAO.getById(factoryId);
+
+        if (manager != null && factory != null) {
+            manager.setFactory(factory);
+            userDAO.updateUser(manager);
+            return Response.status(Response.Status.OK).entity(manager).build();
+        } else {
+            return Response.status(Response.Status.NOT_FOUND).entity("Manager or Factory not found").build();
+        }
+    }
+
+    @GET
+    @Path("/managersWithoutFactory")
+    @Produces(MediaType.APPLICATION_JSON)
+    public Collection<User> getManagersWithoutFactory() {
+        UserDAO dao = (UserDAO) ctx.getAttribute("userDAO");
+        return dao.getManagersWithoutFactory();
+    }
+
     @PUT
     @Path("/{username}/changePassword")
     @Consumes(MediaType.APPLICATION_JSON)
@@ -120,6 +147,7 @@ public class UserService {
             return Response.status(Response.Status.NOT_FOUND).entity("User not found").build();
         }
     }
+
     @PUT
     @Path("/{username}/changeFirstName")
     @Consumes(MediaType.APPLICATION_JSON)
@@ -135,6 +163,7 @@ public class UserService {
             return Response.status(Response.Status.NOT_FOUND).entity("User not found").build();
         }
     }
+
     @PUT
     @Path("/{username}/changeLastName")
     @Consumes(MediaType.APPLICATION_JSON)
@@ -150,6 +179,7 @@ public class UserService {
             return Response.status(Response.Status.NOT_FOUND).entity("User not found").build();
         }
     }
+
     @PUT
     @Path("/{username}/changeGender")
     @Consumes(MediaType.APPLICATION_JSON)
@@ -165,6 +195,7 @@ public class UserService {
             return Response.status(Response.Status.NOT_FOUND).entity("User not found").build();
         }
     }
+
     @PUT
     @Path("/{username}/changeBirthDate")
     @Consumes(MediaType.APPLICATION_JSON)
@@ -180,6 +211,4 @@ public class UserService {
             return Response.status(Response.Status.NOT_FOUND).entity("User not found").build();
         }
     }
-
-
 }

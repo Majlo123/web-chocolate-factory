@@ -20,7 +20,7 @@
       <p><strong>Comments:</strong> {{ factory.comments }}</p>
       <div class="factory-card-buttons">
         <button @click="viewMore(factory.id)" class="btn-primary">View More</button>
-        
+        <button @click="deleteFactory(factory.id)" class="btn-danger">Delete Factory</button>
       </div>
     </div>
   </div>
@@ -51,6 +51,16 @@ export default {
           console.error("Error fetching factories", error);
         });
     },
+    deleteFactory(factoryId) {
+  axios.delete(`http://localhost:8080/WebShopAppREST/rest/factories/${factoryId}`)
+    .then(() => {
+      alert('Factory deleted successfully');
+      this.fetchFactories();
+    })
+    .catch(error => {
+      console.error('Error deleting factory', error);
+    });
+},
     viewMore(factoryId) {
       this.$router.push({ name: 'FactoryDetails', params: { id: factoryId,username:2} });
     },

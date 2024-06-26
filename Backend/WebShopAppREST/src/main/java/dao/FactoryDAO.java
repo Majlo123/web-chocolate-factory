@@ -47,6 +47,15 @@ public class FactoryDAO {
             System.out.println("Error loading factories from file: " + e.getMessage());
         }
     }
+    private void saveFactoriesToFile() {
+        try (FileWriter writer = new FileWriter(new File(contextPath, "resources/factories.json"))) {
+            Gson gson = new Gson();
+            gson.toJson(factoryList, writer);
+        } catch (IOException e) {
+            e.printStackTrace();
+            System.out.println("Error saving factories to file: " + e.getMessage());
+        }
+    }
     public Factory getById(int id) {
         for (Factory factory : factoryList) {
             if (factory.getId() == id) {
@@ -55,7 +64,23 @@ public class FactoryDAO {
         }
         return null;
     }
+    public Factory create(Factory factory) {
+    	factory.setId(nextId());
+    	factoryList.add(factory);
+        saveFactoriesToFile();
+        return factory;
+    }
 
+    public int nextId() {
+        int maxId = -1;
+        for (Factory factory : factoryList) {
+            if (maxId < factory.getId()) {
+                maxId = factory.getId();
+            }
+        }
+        maxId++;
+        return maxId;
+    }
     public void updateFactory(Factory factory) {
         for (int i = 0; i < factoryList.size(); i++) {
             if (factoryList.get(i).getId() == factory.getId()) {
@@ -89,6 +114,11 @@ public class FactoryDAO {
             }
         }
     }
-
+    public void deleteFactory(int factoryId) {
+        Factory factory = getById(factoryId);
+        if (factory != null) {
+            factoryList.remove(factory);
+        } 
+    }
     }
 
