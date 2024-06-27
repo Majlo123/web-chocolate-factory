@@ -48,7 +48,7 @@ const routes = [
     component: FactoryDetails
   },
   {
-    path: '/users/:username',
+    path: '/user-list/:username',
     name: 'UserList',
     component: UserList
   },

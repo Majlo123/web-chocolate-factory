@@ -13,6 +13,9 @@
         <router-link 
           v-if="user" 
           :to="{ name: 'ViewProfileAdministrator', params: { username: user.username} }">View Profile</router-link>
+          <router-link 
+          v-if="user" 
+          :to="{ name: 'UserList', params: { username: user.username} }">Users</router-link>
         <div class="auth">
           <span v-if="user">Welcome, {{ user.firstName }} {{ user.lastName }}!</span>
           <button v-if="user" @click="signOut">Sign Out</button>
