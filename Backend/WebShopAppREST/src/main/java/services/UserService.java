@@ -88,6 +88,21 @@ public class UserService {
 
         return Response.status(Response.Status.CREATED).entity(user).build();
     }
+    @POST
+    @Path("/signupmanager")
+    @Produces(MediaType.APPLICATION_JSON)
+    @Consumes(MediaType.APPLICATION_JSON)
+    public Response signUpManager(User user) {
+        UserDAO dao = (UserDAO) ctx.getAttribute("userDAO");
+
+        if (dao.getById(user.getUsername()) != null) {
+            return Response.status(Response.Status.CONFLICT).entity("Username exists.").build();
+        }
+
+        user.setRole("Menadžer");
+        dao.create(user);
+        return Response.status(Response.Status.CREATED).entity(user).build();
+    }
 
     @POST
     @Path("/signupuser")

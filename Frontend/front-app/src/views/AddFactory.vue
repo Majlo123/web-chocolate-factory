@@ -80,28 +80,18 @@ import VectorSource from 'ol/source/Vector';
 export default {
   data() {
     return {
-      newFactory: {
-        name: '',
-        location: {
-          street: '',
-          city: '',
-          state: '',
-          latitude: 0.0,
-          longitude: 0.0
-        },
-        averageRating: 0.0,
-        workingHours: '',
-        workStatus: 'working',
-        logo: ''
-      },
-      selectedManager: null,
-      managers: [],
       previewImage: null,
       map: null,
       markerLayer: null,
       workingHoursError: null,
-      openCageApiKey: '2442110cc01e45238bd53f0f451c7a3a'
+      openCageApiKey: '2442110cc01e45238bd53f0f451c7a3a',
+      managers: []
     };
+  },
+  computed: {
+    newFactory() {
+      return this.$store.state.factoryForm;
+    },
   },
   mounted() {
     this.initMap();
@@ -113,13 +103,13 @@ export default {
         target: 'map',
         layers: [
           new TileLayer({
-            source: new OSMSource()
-          })
+            source: new OSMSource(),
+          }),
         ],
         view: new View({
           center: fromLonLat([0, 0]),
-          zoom: 2
-        })
+          zoom: 2,
+        }),
       });
 
       this.markerLayer = new VectorLayer({
@@ -127,17 +117,23 @@ export default {
         style: new Style({
           image: new Icon({
             anchor: [0.5, 1],
-            src: 'https://openlayers.org/en/v4.6.5/examples/data/icon.png'
-          })
-        })
+            src: 'https://openlayers.org/en/v4.6.5/examples/data/icon.png',
+          }),
+        }),
       });
 
       this.map.addLayer(this.markerLayer);
 
       this.map.on('singleclick', (event) => {
         const coordinate = toLonLat(event.coordinate);
-        this.newFactory.location.latitude = coordinate[1];
-        this.newFactory.location.longitude = coordinate[0];
+        this.$store.commit('setFactoryForm', {
+          ...this.newFactory,
+          location: {
+            ...this.newFactory.location,
+            latitude: coordinate[1],
+            longitude: coordinate[0],
+          },
+        });
 
         this.addMarker(event.coordinate);
         this.reverseGeocode(coordinate[1], coordinate[0]);
@@ -145,29 +141,43 @@ export default {
     },
     addMarker(coordinate) {
       const marker = new Feature({
-        geometry: new Point(coordinate)
+        geometry: new Point(coordinate),
       });
 
       this.markerLayer.getSource().clear();
       this.markerLayer.getSource().addFeature(marker);
     },
     reverseGeocode(lat, lon) {
-      axios.get(`https://api.opencagedata.com/geocode/v1/json?q=${lat}+${lon}&key=${this.openCageApiKey}`)
-        .then(response => {
+      axios
+        .get(`https://api.opencagedata.com/geocode/v1/json?q=${lat}+${lon}&key=${this.openCageApiKey}`)
+        .then((response) => {
           const components = response.data.results[0].components;
-          this.newFactory.location.street = components.road || '';
-          this.newFactory.location.city = components.city || components.town || components.village || '';
-          this.newFactory.location.state = components.state || '';
+          this.$store.commit('setFactoryForm', {
+            ...this.newFactory,
+            location: {
+              ...this.newFactory.location,
+              street: components.road || '',
+              city: components.city || components.town || components.village || '',
+              state: components.state || '',
+            },
+          });
         })
-        .catch(error => {
+        .catch((error) => {
           console.error('Error during reverse geocoding', error);
         });
     },
     onFileChange(event) {
       const file = event.target.files[0];
       if (file) {
-        this.newFactory.logo = file.name;
-        this.previewImage = URL.createObjectURL(file);
+        const reader = new FileReader();
+        reader.onload = (e) => {
+          this.previewImage = e.target.result;
+          this.$store.commit('setFactoryForm', {
+            ...this.newFactory,
+            logo: file.name,
+          });
+        };
+        reader.readAsDataURL(file);
       }
     },
     validateWorkingHours() {
@@ -179,50 +189,64 @@ export default {
       this.workingHoursError = null;
       return true;
     },
-    addFactory() {
-      if (this.validateWorkingHours()) {
-        axios.post('http://localhost:8080/WebShopAppREST/rest/factories/addFactory', this.newFactory)
-          .then(response => {
-            if (this.selectedManager) {
-              this.assignManager(response.data.id, this.selectedManager);
-            } else {
-              alert('Factory added successfully');
-              this.$router.push({ name: 'FactoryListAdministrator', params: { username: this.$route.params.username, factoryId: this.$route.params.id } });
-            }
-          })
-          .catch(error => {
-            console.error("Error adding factory", error);
+    async addFactory() {
+    if (this.validateWorkingHours()) {
+      try {
+        const response = await axios.post('http://localhost:8080/WebShopAppREST/rest/factories/addFactory', this.newFactory);
+        if (this.newFactory.selectedManager) {
+          await this.assignManager(response.data.id, this.newFactory.selectedManager);
+        } else {
+          alert('Factory added successfully');
+          this.$store.commit('resetFactoryForm'); 
+          this.previewImage = null; 
+          this.$router.push({
+            name: 'FactoryListAdministrator',
+            params: { username: this.$route.params.username, factoryId: this.$route.params.id },
           });
+        }
+      } catch (error) {
+        console.error('Error adding factory', error);
       }
-    },
+    }
+  },
     fetchManagers() {
-      axios.get('http://localhost:8080/WebShopAppREST/rest/users/managersWithoutFactory')
-        .then(response => {
+      axios
+        .get('http://localhost:8080/WebShopAppREST/rest/users/managersWithoutFactory')
+        .then((response) => {
           this.managers = response.data;
         })
-        .catch(error => {
-          console.error("Error fetching managers", error);
+        .catch((error) => {
+          console.error('Error fetching managers', error);
         });
     },
-    assignManager(factoryId, managerUsername) {
-      axios.put(`http://localhost:8080/WebShopAppREST/rest/users/${managerUsername}/assignFactory/${factoryId}`)
-        .then(response => {
-          alert('Factory and manager added successfully');
-          this.$router.push({ name: 'FactoryListAdministrator', params: { username: this.$route.params.username, factoryId: this.$route.params.id } });
-        })
-        .catch(error => {
-          console.error("Error assigning manager", error);
-        });
-    },
+    async assignManager(factoryId, managerUsername) {
+    try {
+      await axios.put(`http://localhost:8080/WebShopAppREST/rest/users/${managerUsername}/assignFactory/${factoryId}`);
+      alert('Factory and manager added successfully');
+      this.$store.commit('resetFactoryForm');
+      this.previewImage = null;
+      this.$router.push({
+        name: 'FactoryListAdministrator',
+        params: { username: this.$route.params.username, factoryId: this.$route.params.id },
+      });
+    } catch (error) {
+      console.error('Error assigning manager', error);
+    }
+  },
     goToSignUpManager() {
-      this.$router.push({ name: 'SignUpManager', params: { factoryId: this.newFactory.id } });
+      this.$store.commit('setFactoryForm', this.newFactory);
+      this.$router.push({ name: 'SignUpManager'});
     },
     goBackToFactoryList() {
-      this.$router.push({ name: 'FactoryListAdministrator', params: { username: this.$route.params.username, factoryId: this.$route.params.id } });
-    }
-  }
+      this.$router.push({
+        name: 'FactoryListAdministrator',
+        params: { username: this.$route.params.username, factoryId: this.$route.params.id },
+      });
+    },
+  },
 };
 </script>
+
 
 <style scoped>
 @import url('https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;600&display=swap');

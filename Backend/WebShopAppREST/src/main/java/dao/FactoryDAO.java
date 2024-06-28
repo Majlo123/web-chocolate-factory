@@ -118,7 +118,9 @@ public class FactoryDAO {
         Factory factory = getById(factoryId);
         if (factory != null) {
             factoryList.remove(factory);
+            saveFactoriesToFile();
         } 
+   
     }
     }
 

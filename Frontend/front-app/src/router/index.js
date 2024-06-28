@@ -12,6 +12,7 @@ import ChocolateEditComponent from '../views/ChocolateEditComponent.vue';
 import SignIn from '../views/SignIn.vue';
 import SignUp from '../views/SignUp.vue';
 import SignUpWorker from '../views/SignUpWorker.vue';
+import SignUpManager from '../views/SignUpManager.vue';
 import FactoryListManager from '../views/FactoryListManager.vue';
 import FactoryListBuyer from '../views/FactoryListBuyer.vue';
 import FactoryListWorker from '../views/FactoryListWorker.vue';
@@ -21,6 +22,7 @@ import FactoryDetailsWorker from '../views/FactoryDetailsWorker.vue';
 import ViewProfileManager from '../views/ViewProfileManager.vue';
 import ViewProfileWorker from '../views/ViewProfileWorker.vue';
 import ViewProfileAdministrator from '../views/ViewProfileAdministrator.vue';
+
 const routes = [
   {
     path: '/',
@@ -41,6 +43,11 @@ const routes = [
     path: '/sign-up-worker/:factoryId',
     name: 'SignUpWorker',
     component: SignUpWorker
+  },
+  {
+    path: '/sign-up-manager/',
+    name: 'SignUpManager',
+    component: SignUpManager
   },
   {
     path: '/factories/:id/users/:username',

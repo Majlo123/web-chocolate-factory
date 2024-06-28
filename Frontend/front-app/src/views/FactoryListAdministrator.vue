@@ -33,6 +33,7 @@
         <p><strong>Comments:</strong> {{ factory.comments }}</p>
         <div class="factory-card-buttons">
           <button @click="viewMore(factory.id)" class="btn-primary">View More</button>
+          <button @click="deleteFactory(factory.id)" class="btn-danger">Delete Factory</button>
         </div>
       </div>
     </div>
@@ -63,6 +64,16 @@
             console.error('Error fetching user details', error);
           });
       },
+      deleteFactory(factoryId) {
+  axios.delete(`http://localhost:8080/WebShopAppREST/rest/factories/${factoryId}`)
+    .then(() => {
+      alert('Factory deleted successfully');
+      this.fetchFactories();
+    })
+    .catch(error => {
+      console.error('Error deleting factory', error);
+    })
+  },
       fetchFactories() {
         axios.get('http://localhost:8080/WebShopAppREST/rest/factories')
           .then(response => {
