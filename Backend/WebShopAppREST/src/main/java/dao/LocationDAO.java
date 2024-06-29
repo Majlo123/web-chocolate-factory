@@ -27,7 +27,7 @@ public class LocationDAO {
     public Collection<Location> getAll() {
         return locationsList;
     }
-
+    
     private void loadLocationsFromFile() {
         try (Reader reader = new FileReader(new File(contextPath, "resources/locations.json"))) {
             Gson gson = new Gson();

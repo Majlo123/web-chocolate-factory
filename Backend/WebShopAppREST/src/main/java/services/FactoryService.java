@@ -12,6 +12,7 @@ import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
+import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
@@ -54,7 +55,16 @@ public class FactoryService {
         FactoryDAO dao = (FactoryDAO) ctx.getAttribute("factoryDAO");
         return dao.getAll();
     }
-
+    @GET
+    @Path("/search")
+    @Produces(MediaType.APPLICATION_JSON)
+    public List<Factory> searchFactories(@QueryParam("name") String name, 
+                                          @QueryParam("chocolateName") String chocolateName,
+                                          @QueryParam("location") String location,
+                                          @QueryParam("averageRating") Double averageRating) {
+        FactoryDAO dao = (FactoryDAO) ctx.getAttribute("factoryDAO");
+        return dao.searchFactories(name, chocolateName, location, averageRating);
+    }
     @GET
     @Path("/users/{userId}")
     @Produces(MediaType.APPLICATION_JSON)
@@ -159,7 +169,7 @@ public class FactoryService {
             return Response.status(Response.Status.NOT_FOUND).entity("Factory not found").build();
         }
     }
-
+    
     @PUT
     @Path("/{factoryId}/chocolatequantity/{chocolateId}")
     @Consumes(MediaType.APPLICATION_JSON)

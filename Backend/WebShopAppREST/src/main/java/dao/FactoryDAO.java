@@ -32,7 +32,14 @@ public class FactoryDAO {
     public List<Factory> getAll() {
         return factoryList;
     }
-
+    public List<Factory> searchFactories(String name, String chocolateName, String location, Double averageRating) {
+        return factoryList.stream()
+                .filter(factory -> (name == null || factory.getName().toLowerCase().contains(name.toLowerCase())) &&
+                                   (chocolateName == null || factory.getChocolates().stream().anyMatch(chocolate -> chocolate.getName().toLowerCase().contains(chocolateName.toLowerCase()))) &&
+                                   (location == null || factory.getLocation().getCity().toLowerCase().contains(location.toLowerCase()) || factory.getLocation().getState().toLowerCase().contains(location.toLowerCase())) &&
+                                   (averageRating == null || factory.getAverageRating() >= averageRating))
+                .collect(Collectors.toList());
+    }
     private void loadFactoriesFromFile() {
         try (Reader reader = new FileReader(new File(contextPath, "resources/factories.json"))) {
             Gson gson = new Gson();
