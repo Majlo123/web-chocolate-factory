@@ -18,9 +18,9 @@
       <p><strong>Working Hours:</strong> {{ factory.workingHours }}</p>
       <p><strong>Status:</strong> {{ factory.workStatus }}</p>
       <p><strong>Comments:</strong> {{ factory.comments }}</p>
+      <div class="factory-map" :id="'map-' + factory.id"></div>
       <div class="factory-card-buttons">
         <button @click="viewMore(factory.id)" class="btn-primary">View More</button>
-
       </div>
     </div>
   </div>
@@ -28,12 +28,17 @@
 
 <script>
 import axios from 'axios';
+import Map from 'ol/Map';
+import View from 'ol/View';
+import TileLayer from 'ol/layer/Tile';
+import OSM from 'ol/source/OSM';
+import { fromLonLat } from 'ol/proj';
 
 export default {
   data() {
     return {
       factories: [],
-      loggedInUser: null
+      loggedInUser: null,
     };
   },
   mounted() {
@@ -46,17 +51,32 @@ export default {
         .get('http://localhost:8080/WebShopAppREST/rest/factories')
         .then(response => {
           this.factories = response.data;
+          this.$nextTick(() => {
+            this.factories.forEach(factory => {
+              this.initMap(factory);
+            });
+          });
         })
         .catch(error => {
           console.error("Error fetching factories", error);
         });
     },
-    
-    viewMore(factoryId) {
-      this.$router.push({ name: 'FactoryDetails', params: { id: factoryId,username:2} });
+    initMap(factory) {
+      const map = new Map({
+        target: 'map-' + factory.id,
+        layers: [
+          new TileLayer({
+            source: new OSM(),
+          }),
+        ],
+        view: new View({
+          center: fromLonLat([factory.location.longitude, factory.location.latitude]),
+          zoom: 12, // Podesiti zumiranje da se vidi grad
+        }),
+      });
     },
-    addChocolate(factoryId) {
-      this.$router.push({ name: 'AddChocolate', params: { id: factoryId } });
+    viewMore(factoryId) {
+      this.$router.push({ name: 'FactoryDetails', params: { id: factoryId, username: 2 } });
     },
     getLogoPath(logo) {
       try {
@@ -70,7 +90,7 @@ export default {
       localStorage.removeItem('loggedInUser');
       this.loggedInUser = null;
       this.$router.push({ name: 'FactoryList' });
-    }
+    },
   },
   computed: {
     sortedFactories() {
@@ -83,8 +103,8 @@ export default {
           return 0;
         }
       });
-    }
-  }
+    },
+  },
 };
 </script>
 
@@ -188,5 +208,13 @@ export default {
 
 .btn-secondary:hover {
   background-color: #ccc;
+}
+
+.factory-map {
+  width: 100%;
+  height: 300px; /* Povećana visina za bolji pregled */
+  margin-top: 10px;
+  border: 1px solid #ddd;
+  border-radius: 5px;
 }
 </style>

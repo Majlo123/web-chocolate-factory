@@ -29,6 +29,7 @@
       <p><strong>Working Hours:</strong> {{ factory.workingHours }}</p>
       <p><strong>Status:</strong> {{ factory.workStatus }}</p>
       <p><strong>Comments:</strong> {{ factory.comments }}</p>
+      <div class="factory-map" :id="'map-' + factory.id"></div>
       <div class="factory-card-buttons">
         <button @click.stop="viewMore(factory.id)" class="btn-primary">View More</button>
       </div>
@@ -38,6 +39,11 @@
 
 <script>
 import axios from 'axios';
+import Map from 'ol/Map';
+import View from 'ol/View';
+import TileLayer from 'ol/layer/Tile';
+import OSM from 'ol/source/OSM';
+import { fromLonLat } from 'ol/proj';
 
 export default {
   props: ['username', 'factoryId'],
@@ -66,10 +72,29 @@ export default {
       axios.get('http://localhost:8080/WebShopAppREST/rest/factories')
         .then(response => {
           this.factories = response.data;
+          this.$nextTick(() => {
+            this.factories.forEach(factory => {
+              this.initMap(factory);
+            });
+          });
         })
         .catch(error => {
           console.error('Error fetching factories', error);
         });
+    },
+    initMap(factory) {
+      const map = new Map({
+        target: 'map-' + factory.id,
+        layers: [
+          new TileLayer({
+            source: new OSM(),
+          }),
+        ],
+        view: new View({
+          center: fromLonLat([factory.location.longitude, factory.location.latitude]),
+          zoom: 12, // Podesiti zumiranje da se vidi grad
+        }),
+      });
     },
     viewMore(factoryId) {
       this.$router.push({
@@ -209,5 +234,13 @@ export default {
 
 .btn-secondary:hover {
   background-color: #ccc;
+}
+
+.factory-map {
+  width: 100%;
+  height: 300px; /* Povećana visina za bolji pregled */
+  margin-top: 10px;
+  border: 1px solid #ddd;
+  border-radius: 5px;
 }
 </style>
