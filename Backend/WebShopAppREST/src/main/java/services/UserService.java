@@ -1,5 +1,7 @@
 package services;
 
+import java.io.IOException;
+import java.net.URISyntaxException;
 import java.util.Collection;
 import javax.annotation.PostConstruct;
 import javax.servlet.ServletContext;
@@ -30,7 +32,7 @@ public class UserService {
     public UserService() {}
 
     @PostConstruct
-    public void init() {
+    public void init() throws Exception {
         if (ctx.getAttribute("userDAO") == null) {
             String contextPath = ctx.getRealPath("/");
             ctx.setAttribute("userDAO", new UserDAO(contextPath));
@@ -85,7 +87,7 @@ public class UserService {
     @PUT
     @Path("/{username}/toggleBlock")
     @Consumes(MediaType.APPLICATION_JSON)
-    public Response toggleBlock(@PathParam("username") String username, User updatedUser) {
+    public Response toggleBlock(@PathParam("username") String username, User updatedUser) throws IOException, URISyntaxException {
         UserDAO userDAO = (UserDAO) ctx.getAttribute("userDAO");
         User user = userDAO.getById(username);
 
@@ -110,7 +112,7 @@ public class UserService {
     @Path("/signupworker/{factoryId}")
     @Produces(MediaType.APPLICATION_JSON)
     @Consumes(MediaType.APPLICATION_JSON)
-    public Response signUpWorker(@PathParam("factoryId") int factoryId, User user) {
+    public Response signUpWorker(@PathParam("factoryId") int factoryId, User user) throws IOException, URISyntaxException {
         UserDAO dao = (UserDAO) ctx.getAttribute("userDAO");
         FactoryDAO factoryDao = (FactoryDAO) ctx.getAttribute("factoryDAO");
         if (dao.getById(user.getUsername()) != null) {
@@ -133,7 +135,7 @@ public class UserService {
     @Path("/signupmanager")
     @Produces(MediaType.APPLICATION_JSON)
     @Consumes(MediaType.APPLICATION_JSON)
-    public Response signUpManager(User user) {
+    public Response signUpManager(User user) throws IOException, URISyntaxException {
         UserDAO dao = (UserDAO) ctx.getAttribute("userDAO");
 
         if (dao.getById(user.getUsername()) != null) {
@@ -149,7 +151,7 @@ public class UserService {
     @Path("/signupuser")
     @Produces(MediaType.APPLICATION_JSON)
     @Consumes(MediaType.APPLICATION_JSON)
-    public Response signUpUser(User user) {
+    public Response signUpUser(User user) throws IOException, URISyntaxException {
         UserDAO dao = (UserDAO) ctx.getAttribute("userDAO");
 
         if (dao.getById(user.getUsername()) != null) {
@@ -164,7 +166,7 @@ public class UserService {
     @PUT
     @Path("/{username}/assignFactory/{factoryId}")
     @Consumes(MediaType.APPLICATION_JSON)
-    public Response assignFactoryToManager(@PathParam("username") String username, @PathParam("factoryId") int factoryId) {
+    public Response assignFactoryToManager(@PathParam("username") String username, @PathParam("factoryId") int factoryId) throws IOException, URISyntaxException {
         UserDAO userDAO = (UserDAO) ctx.getAttribute("userDAO");
         FactoryDAO factoryDAO = (FactoryDAO) ctx.getAttribute("factoryDAO");
 
@@ -191,7 +193,7 @@ public class UserService {
     @PUT
     @Path("/{username}/changePassword")
     @Consumes(MediaType.APPLICATION_JSON)
-    public Response updateUserPassword(@PathParam("username") String username, User updatedUser) {
+    public Response updateUserPassword(@PathParam("username") String username, User updatedUser) throws IOException, URISyntaxException {
         UserDAO userDAO = (UserDAO) ctx.getAttribute("userDAO");
         User user = userDAO.getById(username);
 
@@ -207,7 +209,7 @@ public class UserService {
     @PUT
     @Path("/{username}/changeFirstName")
     @Consumes(MediaType.APPLICATION_JSON)
-    public Response updateUserFirstName(@PathParam("username") String username, User updatedUser) {
+    public Response updateUserFirstName(@PathParam("username") String username, User updatedUser) throws IOException, URISyntaxException {
         UserDAO userDAO = (UserDAO) ctx.getAttribute("userDAO");
         User user = userDAO.getById(username);
 
@@ -223,7 +225,7 @@ public class UserService {
     @PUT
     @Path("/{username}/changeLastName")
     @Consumes(MediaType.APPLICATION_JSON)
-    public Response updateUserLastName(@PathParam("username") String username, User updatedUser) {
+    public Response updateUserLastName(@PathParam("username") String username, User updatedUser) throws IOException, URISyntaxException {
         UserDAO userDAO = (UserDAO) ctx.getAttribute("userDAO");
         User user = userDAO.getById(username);
 
@@ -239,7 +241,7 @@ public class UserService {
     @PUT
     @Path("/{username}/changeGender")
     @Consumes(MediaType.APPLICATION_JSON)
-    public Response updateUserGender(@PathParam("username") String username, User updatedUser) {
+    public Response updateUserGender(@PathParam("username") String username, User updatedUser) throws IOException, URISyntaxException {
         UserDAO userDAO = (UserDAO) ctx.getAttribute("userDAO");
         User user = userDAO.getById(username);
 
@@ -255,7 +257,7 @@ public class UserService {
     @PUT
     @Path("/{username}/changeBirthDate")
     @Consumes(MediaType.APPLICATION_JSON)
-    public Response updateUserDateBirth(@PathParam("username") String username, User updatedUser) {
+    public Response updateUserDateBirth(@PathParam("username") String username, User updatedUser) throws IOException, URISyntaxException {
         UserDAO userDAO = (UserDAO) ctx.getAttribute("userDAO");
         User user = userDAO.getById(username);
 

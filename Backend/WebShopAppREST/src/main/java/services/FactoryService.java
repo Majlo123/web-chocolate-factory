@@ -1,5 +1,7 @@
 package services;
 
+import java.io.IOException;
+import java.net.URISyntaxException;
 import java.util.List;
 
 import javax.annotation.PostConstruct;
@@ -33,7 +35,7 @@ public class FactoryService {
     public FactoryService() {}
 
     @PostConstruct
-    public void init() {
+    public void init() throws Exception {
         if (ctx.getAttribute("factoryDAO") == null) {
             String contextPath = ctx.getRealPath("/");
             ctx.setAttribute("factoryDAO", new FactoryDAO(contextPath));
@@ -123,7 +125,7 @@ public class FactoryService {
     }
     @DELETE
     @Path("/{factoryId}")
-    public Response deleteFactory(@PathParam("factoryId") int factoryId) {
+    public Response deleteFactory(@PathParam("factoryId") int factoryId) throws IOException, URISyntaxException{
         FactoryDAO factoryDAO = (FactoryDAO) ctx.getAttribute("factoryDAO");
         factoryDAO.deleteFactory(factoryId);
         return Response.ok().build();
@@ -200,7 +202,7 @@ public class FactoryService {
     @POST
     @Path("/addFactory")
     @Consumes(MediaType.APPLICATION_JSON)
-    public Response createFactory(Factory factory) {
+    public Response createFactory(Factory factory) throws IOException, URISyntaxException {
         FactoryDAO factoryDAO = (FactoryDAO) ctx.getAttribute("factoryDAO");
         Factory createdFactory = factoryDAO.create(factory);
         if (createdFactory != null) {

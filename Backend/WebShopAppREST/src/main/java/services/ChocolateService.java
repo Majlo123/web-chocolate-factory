@@ -1,5 +1,7 @@
 package services;
 
+import java.io.IOException;
+import java.net.URISyntaxException;
 import java.util.List;
 
 import javax.annotation.PostConstruct;
@@ -27,7 +29,7 @@ public class ChocolateService {
     public ChocolateService() {}
 
     @PostConstruct
-    public void init() {
+    public void init() throws Exception {
         if (ctx.getAttribute("chocolateDAO") == null) {
             String contextPath = ctx.getRealPath("/");
             ctx.setAttribute("chocolateDAO", new ChocolateDAO(contextPath));
@@ -47,7 +49,7 @@ public class ChocolateService {
 
     @POST
     @Consumes(MediaType.APPLICATION_JSON)
-    public Response createChocolate(Chocolate chocolate) {
+    public Response createChocolate(Chocolate chocolate) throws IOException, URISyntaxException {
         ChocolateDAO chocolateDAO = (ChocolateDAO) ctx.getAttribute("chocolateDAO");
         Chocolate createdChocolate = chocolateDAO.create(chocolate);
         if (createdChocolate != null) {
@@ -60,7 +62,7 @@ public class ChocolateService {
     @POST
     @Path("/createInFactory/{factoryId}")
     @Consumes(MediaType.APPLICATION_JSON)
-    public Response createChocolateInFactory(@PathParam("factoryId") int factoryId, Chocolate chocolate) {
+    public Response createChocolateInFactory(@PathParam("factoryId") int factoryId, Chocolate chocolate) throws IOException, URISyntaxException {
         ChocolateDAO chocolateDAO = (ChocolateDAO) ctx.getAttribute("chocolateDAO");
         FactoryDAO factoryDAO = (FactoryDAO) ctx.getAttribute("factoryDAO");
 

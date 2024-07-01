@@ -238,77 +238,91 @@ export default {
   color: white;
   border: none;
   padding: 10px 20px;
-  border-radius: 5px;
+  font-size: 1rem;
   cursor: pointer;
 }
 
 .auth button:hover {
-  background-color: #552e1a;
+  background-color: #532f1d;
+}
+
+.search-filters {
+  margin: 20px 0;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.search-filters input,
+.search-filters select {
+  padding: 10px;
+  font-size: 1rem;
 }
 
 .factory-card {
-  background: #fff;
-  border: 1px solid #ddd;
-  border-radius: 8px;
+  background: white;
+  border-radius: 10px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  margin: 20px 0;
   padding: 20px;
-  margin-bottom: 20px;
-  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-  transition: transform 0.2s;
-}
-
-.factory-card:hover {
-  transform: scale(1.02);
 }
 
 .factory-card-header {
   display: flex;
-  align-items: center;
   justify-content: space-between;
+  align-items: center;
+}
+
+.factory-card-header h2 {
+  margin: 0;
+  font-size: 1.5rem;
+  color: #333;
 }
 
 .factory-logo {
-  width: 80px;
-  height: auto;
+  height: 50px;
+  width: 50px;
+}
+
+.factory-card p {
+  margin: 10px 0;
+  color: #555;
+}
+
+.factory-map {
+  height: 200px;
+  margin: 20px 0;
 }
 
 .factory-card-buttons {
   display: flex;
   justify-content: space-between;
-  margin-top: 10px;
 }
 
-.btn-primary, .btn-secondary {
+.btn-primary,
+.btn-danger {
   padding: 10px 20px;
+  font-size: 1rem;
+  cursor: pointer;
   border: none;
   border-radius: 5px;
-  cursor: pointer;
-  font-size: 1rem;
 }
 
 .btn-primary {
   background-color: #6b3e26;
   color: white;
-  margin-right: 10px;
-}
-
-.btn-secondary {
-  background-color: #ddd;
-  color: #333;
 }
 
 .btn-primary:hover {
-  background-color: #552e1a;
+  background-color: #532f1d;
 }
 
-.btn-secondary:hover {
-  background-color: #ccc;
+.btn-danger {
+  background-color: #b33939;
+  color: white;
 }
 
-.factory-map {
-  width: 100%;
-  height: 300px; /* Povećana visina za bolji pregled */
-  margin-top: 10px;
-  border: 1px solid #ddd;
-  border-radius: 5px;
+.btn-danger:hover {
+  background-color: #8b2727;
 }
 </style>
