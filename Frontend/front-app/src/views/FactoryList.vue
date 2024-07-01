@@ -13,7 +13,7 @@
       <input v-model="search.name" placeholder="Search by Factory Name">
       <input v-model="search.chocolateName" placeholder="Search by Chocolate Name">
       <input v-model="search.location" placeholder="Search by Location">
-      <input v-model="search.averageRating" type="number" min="0" max="5" step="0.1" placeholder="Search by Average Rating">
+      <input v-model="search.averageRating" type="number" min="0" max="5" step="0.1" placeholder="Rating">
       
       <select v-model="sortCriteria">
         <option value="name">Name</option>

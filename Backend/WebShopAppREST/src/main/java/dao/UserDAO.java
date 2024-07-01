@@ -9,7 +9,9 @@ import java.io.Writer;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Comparator;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -53,7 +55,42 @@ public class UserDAO {
     public Collection<User> getAll() {
         return usersList;
     }
+    public Collection<User> searchUsers(String firstName, String lastName, String username) {
+        return usersList.stream()
+                .filter(user -> (firstName == null || user.getFirstName().toLowerCase().contains(firstName.toLowerCase())) &&
+                                (lastName == null || user.getLastName().toLowerCase().contains(lastName.toLowerCase())) &&
+                                (username == null || user.getUsername().toLowerCase().contains(username.toLowerCase())))
+                .collect(Collectors.toList());
+    }
 
+    public Collection<User> sortUsers(String sortBy, boolean ascending) {
+        Comparator<User> comparator;
+        switch (sortBy) {
+            case "firstName":
+                comparator = Comparator.comparing(User::getFirstName);
+                break;
+            case "lastName":
+                comparator = Comparator.comparing(User::getLastName);
+                break;
+            case "username":
+                comparator = Comparator.comparing(User::getUsername);
+                break;
+            default:
+                throw new IllegalArgumentException("Invalid sort parameter");
+        }
+
+        if (!ascending) {
+            comparator = comparator.reversed();
+        }
+
+        return usersList.stream().sorted(comparator).collect(Collectors.toList());
+    }
+
+    public Collection<User> filterUsers(String role, String userType) {
+        return usersList.stream()
+                .filter(user -> (role == null || user.getRole().equals(role))) 
+                .collect(Collectors.toList());
+    }
     public User getById(String id) {
         for (User user : getAll()) {
             if (user.getUsername().equals(id)) {

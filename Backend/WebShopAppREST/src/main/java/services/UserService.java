@@ -10,6 +10,7 @@ import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
+import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
@@ -55,7 +56,32 @@ public class UserService {
         UserDAO dao = (UserDAO) ctx.getAttribute("userDAO");
         return dao.getById(id);
     }
+    @GET
+    @Path("/search")
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response searchUsers(@QueryParam("firstName") String firstName, @QueryParam("lastName") String lastName, @QueryParam("username") String username) {
+        UserDAO dao = (UserDAO) ctx.getAttribute("userDAO");
+        Collection<User> users = dao.searchUsers(firstName, lastName, username);
+        return Response.ok(users).build();
+    }
 
+    @GET
+    @Path("/sort")
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response sortUsers(@QueryParam("sortBy") String sortBy, @QueryParam("ascending") boolean ascending) {
+        UserDAO dao = (UserDAO) ctx.getAttribute("userDAO");
+        Collection<User> users = dao.sortUsers(sortBy, ascending);
+        return Response.ok(users).build();
+    }
+
+    @GET
+    @Path("/filter")
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response filterUsers(@QueryParam("role") String role, @QueryParam("userType") String userType) {
+        UserDAO dao = (UserDAO) ctx.getAttribute("userDAO");
+        Collection<User> users = dao.filterUsers(role, userType);
+        return Response.ok(users).build();
+    }
     @POST
     @Path("/login")
     @Produces(MediaType.APPLICATION_JSON)

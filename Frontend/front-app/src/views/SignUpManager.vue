@@ -25,8 +25,8 @@
       <div class="form-group">
         <label>Gender:</label>
         <select v-model="newUser.gender" required class="form-control">
-          <option value="M">Male</option>
-          <option value="F">Female</option>
+          <option value="Muški">Male</option>
+          <option value="Ženski">Female</option>
         </select>
       </div>
       <div class="form-group">
