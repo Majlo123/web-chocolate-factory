@@ -9,23 +9,31 @@ public class User {
     private String first_name;
     private String last_name;
     private String gender;
+    private boolean isBlocked;
     @JsonbDateFormat("yyyy-MM-dd")
     private LocalDate birth_date;
     private String role;
     private Factory factory; 
 
     public User() {}
-    public User(String username, String password, String first_name, String last_name, String gender, LocalDate birth_date, String role, Factory factory) {
+    public User(String username, String password, String first_name, String last_name, String gender,boolean isBlocked,LocalDate birth_date, String role, Factory factory) {
         this.username = username;
         this.password = password;
         this.first_name = first_name;
         this.last_name = last_name;
         this.gender = gender;
+        this.isBlocked=isBlocked;
         this.birth_date = birth_date;
         this.role = role;
         this.factory = factory;
     }
-    // Getters and Setters
+    public boolean isBlocked() {
+		return isBlocked;
+	}
+	public void setBlocked(boolean isBlocked) {
+		this.isBlocked = isBlocked;
+	}
+	// Getters and Setters
     public String getUsername() {
         return username;
     }

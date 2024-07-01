@@ -73,7 +73,7 @@ public class UserService {
         Collection<User> users = dao.sortUsers(sortBy, ascending);
         return Response.ok(users).build();
     }
-
+    
     @GET
     @Path("/filter")
     @Produces(MediaType.APPLICATION_JSON)
@@ -81,6 +81,21 @@ public class UserService {
         UserDAO dao = (UserDAO) ctx.getAttribute("userDAO");
         Collection<User> users = dao.filterUsers(role, userType);
         return Response.ok(users).build();
+    }
+    @PUT
+    @Path("/{username}/toggleBlock")
+    @Consumes(MediaType.APPLICATION_JSON)
+    public Response toggleBlock(@PathParam("username") String username, User updatedUser) {
+        UserDAO userDAO = (UserDAO) ctx.getAttribute("userDAO");
+        User user = userDAO.getById(username);
+
+        if (user != null) {
+            user.setBlocked(updatedUser.isBlocked());
+            userDAO.updateUser(user);
+            return Response.status(Response.Status.OK).entity(user).build();
+        } else {
+            return Response.status(Response.Status.NOT_FOUND).entity("User not found").build();
+        }
     }
     @POST
     @Path("/login")

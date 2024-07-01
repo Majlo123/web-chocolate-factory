@@ -47,6 +47,12 @@
       <p><strong>Gender:</strong> {{ user.gender }}</p>
       <p><strong>Date of Birth:</strong> {{ user.birthDate }}</p>
       <p><strong>Role:</strong> {{ user.role }}</p>
+      <div v-if="user.role !== 'Administrator'">
+        <p><strong>Status:</strong> {{ user.blocked ? 'Blocked' : 'Active' }}</p>
+        <button @click="toggleBlock(user)">
+          {{ user.blocked ? 'Unblock' : 'Block' }}
+        </button>
+      </div>
     </div>
   </div>
 </template>
@@ -121,6 +127,17 @@ export default {
         this.sortOrder = 1;
       }
     },
+    toggleBlock(user) {
+      const newStatus = !user.blocked;
+      axios
+        .put(`http://localhost:8080/WebShopAppREST/rest/users/${user.username}/toggleBlock`, { ...user, blocked: newStatus })
+        .then(response => {
+          user.blocked = newStatus;
+        })
+        .catch(error => {
+          console.error('Error updating user status', error);
+        });
+    },
   },
   mounted() {
     this.fetchUser();
@@ -185,5 +202,18 @@ export default {
   border-radius: 8px;
   padding: 20px;
   margin-bottom: 20px;
+}
+
+.user-card button {
+  background-color: #6b3e26;
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.user-card button:hover {
+  background-color: #552e1a;
 }
 </style>

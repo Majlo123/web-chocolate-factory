@@ -36,6 +36,10 @@ export default {
       .then(response => {
         const user = response.data.find(user => user.username === this.username && user.password === this.password);
         if (user) {
+          if(user.blocked==true){
+            this.errorMessage = 'Cant log in. Blocked by administrator.';
+          }
+          else{
           if (user.role === 'Menadžer') { 
             this.$router.push({ name: 'FactoryListManager', params: { username: user.username, factoryId: user.factory.id } });
           }
@@ -48,6 +52,7 @@ export default {
           else if (user.role === 'Administrator') { 
             this.$router.push({ name: 'FactoryListAdministrator', params: { username: user.username} });
           }
+        }
         } else {
           this.errorMessage = 'Invalid credentials. Please try again.';
         }
