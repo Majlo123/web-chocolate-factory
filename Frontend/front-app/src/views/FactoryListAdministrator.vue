@@ -21,42 +21,7 @@
         <button v-if="user" @click="signOut">Sign Out</button>
       </div>
     </div>
-
-    <!-- Search and Filter Controls -->
-    <div class="search-filters">
-      <input v-model="search.name" placeholder="Search by Factory Name">
-      <input v-model="search.chocolateName" placeholder="Search by Chocolate Name">
-      <input v-model="search.location" placeholder="Search by Location">
-      <input v-model="search.averageRating" type="number" min="0" max="5" step="0.1" placeholder="Rating">
-      
-      <select v-model="sortCriteria">
-        <option value="name">Name</option>
-        <option value="location">Location</option>
-        <option value="averageRating">Average Rating</option>
-      </select>
-      <select v-model="sortOrder">
-        <option value="asc">Ascending</option>
-        <option value="desc">Descending</option>
-      </select>
-      
-      <input type="checkbox" v-model="filters.onlyOpenFactories"> Show only open factories
-      
-      <select v-model="filters.chocolateKind">
-        <option value="">All Kinds</option>
-        <option value="Dark">Dark</option>
-        <option value="Milk">Milk</option>
-        <option value="White">White</option>
-      </select>
-      
-      <select v-model="filters.chocolateType">
-        <option value="">All Types</option>
-        <option value="Bar">Bar</option>
-        <option value="Box">Box</option>
-        <option value="Truffle">Truffle</option>
-      </select>
-    </div>
-
-    <div v-for="factory in filteredSortedFactories" :key="factory.id" class="factory-card">
+    <div v-for="factory in sortedFactories" :key="factory.id" class="factory-card">
       <div class="factory-card-header">
         <h2>{{ factory.name }}</h2>
         <img :src="getLogoPath(factory.logo)" alt="Logo" class="factory-logo">
@@ -88,20 +53,7 @@ export default {
   data() {
     return {
       factories: [],
-      user: null,
-      search: {
-        name: '',
-        chocolateName: '',
-        location: '',
-        averageRating: ''
-      },
-      sortCriteria: 'name',
-      sortOrder: 'asc',
-      filters: {
-        onlyOpenFactories: false,
-        chocolateKind: '',
-        chocolateType: ''
-      }
+      user: null
     };
   },
   mounted() {
@@ -172,61 +124,16 @@ export default {
     }
   },
   computed: {
-    filteredSortedFactories() {
-      let result = this.factories;
-
-      // Apply search filters
-      if (this.search.name) {
-        result = result.filter(factory => factory.name.toLowerCase().includes(this.search.name.toLowerCase()));
-      }
-      if (this.search.chocolateName) {
-        result = result.filter(factory => 
-          factory.chocolates.some(chocolate => chocolate.name.toLowerCase().includes(this.search.chocolateName.toLowerCase()))
-        );
-      }
-      if (this.search.location) {
-        result = result.filter(factory => 
-          factory.location.city.toLowerCase().includes(this.search.location.toLowerCase()) ||
-          factory.location.state.toLowerCase().includes(this.search.location.toLowerCase())
-        );
-      }
-      if (this.search.averageRating) {
-        result = result.filter(factory => factory.averageRating >= parseFloat(this.search.averageRating));
-      }
-
-      // Apply filters
-      if (this.filters.onlyOpenFactories) {
-        result = result.filter(factory => factory.workStatus === 'Working');
-      }
-      if (this.filters.chocolateKind) {
-        result = result.filter(factory => 
-          factory.chocolates.some(chocolate => chocolate.chocolateKind === this.filters.chocolateKind)
-        );
-      }
-      if (this.filters.chocolateType) {
-        result = result.filter(factory => 
-          factory.chocolates.some(chocolate => chocolate.chocolateType === this.filters.chocolateType)
-        );
-      }
-
-      // Apply sorting
-      result = result.slice().sort((a, b) => {
-        let sortVal = 0;
-        if (this.sortCriteria === 'name') {
-          sortVal = a.name.localeCompare(b.name);
-        } else if (this.sortCriteria === 'location') {
-          sortVal = a.location.city.localeCompare(b.location.city) || a.location.state.localeCompare(b.location.state);
-        } else if (this.sortCriteria === 'averageRating') {
-          sortVal = a.averageRating - b.averageRating;
+    sortedFactories() {
+      return this.factories.slice().sort((a, b) => {
+        if (a.workStatus === 'Working' && b.workStatus !== 'Working') {
+          return -1;
+        } else if (a.workStatus !== 'Working' && b.workStatus === 'Working') {
+          return 1;
+        } else {
+          return 0;
         }
-
-        if (this.sortOrder === 'desc') {
-          sortVal *= -1;
-        }
-        return sortVal;
       });
-
-      return result;
     }
   }
 };
@@ -268,33 +175,20 @@ export default {
   color: white;
   border: none;
   padding: 10px 20px;
-  font-size: 1rem;
+  border-radius: 5px;
   cursor: pointer;
 }
 
 .auth button:hover {
-  background-color: #532f1d;
-}
-
-.search-filters {
-  margin: 20px 0;
-  display: flex;
-  flex-wrap: wrap;
-  gap: 10px;
-}
-
-.search-filters input,
-.search-filters select {
-  padding: 10px;
-  font-size: 1rem;
+  background-color: #552e1a;
 }
 
 .factory-card {
-  background: white;
-  border-radius: 10px;
-  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-  margin: 20px 0;
+  background: #fff;
+  border: 1px solid #ddd;
+  border-radius: 8px;
   padding: 20px;
+  margin-bottom: 20px;
 }
 
 .factory-card-header {
@@ -303,39 +197,23 @@ export default {
   align-items: center;
 }
 
-.factory-card-header h2 {
-  margin: 0;
-  font-size: 1.5rem;
-  color: #333;
-}
-
 .factory-logo {
-  height: 50px;
-  width: 50px;
-}
-
-.factory-card p {
-  margin: 10px 0;
-  color: #555;
-}
-
-.factory-map {
-  height: 200px;
-  margin: 20px 0;
+  width: 100px;
+  height: auto;
 }
 
 .factory-card-buttons {
   display: flex;
   justify-content: space-between;
+  margin-top: 10px;
 }
 
-.btn-primary,
-.btn-danger {
+.btn-primary, .btn-secondary {
   padding: 10px 20px;
-  font-size: 1rem;
-  cursor: pointer;
   border: none;
   border-radius: 5px;
+  cursor: pointer;
+  font-size: 1rem;
 }
 
 .btn-primary {
@@ -343,16 +221,24 @@ export default {
   color: white;
 }
 
+.btn-secondary {
+  background-color: #ddd;
+  color: #333;
+}
+
 .btn-primary:hover {
-  background-color: #532f1d;
+  background-color: #552e1a;
 }
 
-.btn-danger {
-  background-color: #b33939;
-  color: white;
+.btn-secondary:hover {
+  background-color: #ccc;
 }
 
-.btn-danger:hover {
-  background-color: #8b2727;
+.factory-map {
+  width: 100%;
+  height: 300px; /* Povećana visina za bolji pregled */
+  margin-top: 10px;
+  border: 1px solid #ddd;
+  border-radius: 5px;
 }
 </style>
