@@ -6,12 +6,6 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.io.Reader;
 import java.io.Writer;
-import java.lang.reflect.Type;
-import java.net.URISyntaxException;
-import java.nio.charset.StandardCharsets;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
@@ -28,10 +22,9 @@ public class FactoryDAO {
 
     private List<Factory> factoryList = new ArrayList<>();
     private String contextPath;
-    private Gson gson = new Gson();
-    
+
     public FactoryDAO() {}
-    public FactoryDAO(String contextPath) throws Exception {
+    public FactoryDAO(String contextPath) {
         this.contextPath = contextPath;
         loadFactoriesFromFile();
     }
@@ -47,17 +40,28 @@ public class FactoryDAO {
                                    (averageRating == null || factory.getAverageRating() >= averageRating))
                 .collect(Collectors.toList());
     }
-    private void loadFactoriesFromFile() throws Exception {
-    	Path path = Paths.get(FactoryDAO.class.getResource("/static/factories.json").toURI());
-    	Type listType = new TypeToken<List<Factory>>() {}.getType();
-        String json = String.join("", Files.readAllLines(path));
-        factoryList = gson.fromJson(json, listType);
+    private void loadFactoriesFromFile() {
+        try (Reader reader = new FileReader(new File(contextPath, "resources/factories.json"))) {
+            Gson gson = new Gson();
+            List<Factory> loadedFactories = gson.fromJson(reader, new TypeToken<List<Factory>>() {}.getType());
+
+            if (loadedFactories != null) {
+                factoryList.clear(); // Clear existing factories
+                factoryList.addAll(loadedFactories);
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+            System.out.println("Error loading factories from file: " + e.getMessage());
+        }
     }
-    private void saveFactoriesToFile() throws IOException, URISyntaxException {
-    	Path path = Paths.get(FactoryDAO.class.getResource("/static/factories.json").toURI());
-    	Writer writer = new FileWriter(String.join("", Files.readAllLines(path)), StandardCharsets.UTF_8);
-        gson.toJson(factoryList, writer);
-        writer.close();
+    private void saveFactoriesToFile() {
+        try (FileWriter writer = new FileWriter(new File(contextPath, "resources/factories.json"))) {
+            Gson gson = new Gson();
+            gson.toJson(factoryList, writer);
+        } catch (IOException e) {
+            e.printStackTrace();
+            System.out.println("Error saving factories to file: " + e.getMessage());
+        }
     }
     public Factory getById(int id) {
         for (Factory factory : factoryList) {
@@ -67,7 +71,7 @@ public class FactoryDAO {
         }
         return null;
     }
-    public Factory create(Factory factory) throws IOException, URISyntaxException {
+    public Factory create(Factory factory) {
     	factory.setId(nextId());
     	factoryList.add(factory);
         saveFactoriesToFile();
@@ -91,6 +95,7 @@ public class FactoryDAO {
                 break;
             }
         }
+
         try (Writer writer = new FileWriter(new File(contextPath, "resources/factories.json"))) {
             Gson gson = new GsonBuilder().setPrettyPrinting().create();
             gson.toJson(factoryList, writer);
@@ -116,7 +121,7 @@ public class FactoryDAO {
             }
         }
     }
-    public void deleteFactory(int factoryId) throws IOException, URISyntaxException {
+    public void deleteFactory(int factoryId) {
         Factory factory = getById(factoryId);
         if (factory != null) {
             factoryList.remove(factory);

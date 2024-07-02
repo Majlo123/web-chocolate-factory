@@ -22,7 +22,7 @@ public class LocationService {
     public LocationService() {}
 
     @PostConstruct
-    public void init() throws Exception {
+    public void init() {
         if (ctx.getAttribute("locationDAO") == null) {
             String contextPath = ctx.getRealPath("/");
             ctx.setAttribute("locationDAO", new LocationDAO(contextPath));

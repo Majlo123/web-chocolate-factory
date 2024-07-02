@@ -238,91 +238,77 @@ export default {
   color: white;
   border: none;
   padding: 10px 20px;
-  font-size: 1rem;
+  border-radius: 5px;
   cursor: pointer;
 }
 
 .auth button:hover {
-  background-color: #532f1d;
-}
-
-.search-filters {
-  margin: 20px 0;
-  display: flex;
-  flex-wrap: wrap;
-  gap: 10px;
-}
-
-.search-filters input,
-.search-filters select {
-  padding: 10px;
-  font-size: 1rem;
+  background-color: #552e1a;
 }
 
 .factory-card {
-  background: white;
-  border-radius: 10px;
-  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-  margin: 20px 0;
+  background: #fff;
+  border: 1px solid #ddd;
+  border-radius: 8px;
   padding: 20px;
+  margin-bottom: 20px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  transition: transform 0.2s;
+}
+
+.factory-card:hover {
+  transform: scale(1.02);
 }
 
 .factory-card-header {
   display: flex;
-  justify-content: space-between;
   align-items: center;
-}
-
-.factory-card-header h2 {
-  margin: 0;
-  font-size: 1.5rem;
-  color: #333;
+  justify-content: space-between;
 }
 
 .factory-logo {
-  height: 50px;
-  width: 50px;
-}
-
-.factory-card p {
-  margin: 10px 0;
-  color: #555;
-}
-
-.factory-map {
-  height: 200px;
-  margin: 20px 0;
+  width: 80px;
+  height: auto;
 }
 
 .factory-card-buttons {
   display: flex;
   justify-content: space-between;
+  margin-top: 10px;
 }
 
-.btn-primary,
-.btn-danger {
+.btn-primary, .btn-secondary {
   padding: 10px 20px;
-  font-size: 1rem;
-  cursor: pointer;
   border: none;
   border-radius: 5px;
+  cursor: pointer;
+  font-size: 1rem;
 }
 
 .btn-primary {
   background-color: #6b3e26;
   color: white;
+  margin-right: 10px;
+}
+
+.btn-secondary {
+  background-color: #ddd;
+  color: #333;
 }
 
 .btn-primary:hover {
-  background-color: #532f1d;
+  background-color: #552e1a;
 }
 
-.btn-danger {
-  background-color: #b33939;
-  color: white;
+.btn-secondary:hover {
+  background-color: #ccc;
 }
 
-.btn-danger:hover {
-  background-color: #8b2727;
+.factory-map {
+  width: 100%;
+  height: 300px; /* Povećana visina za bolji pregled */
+  margin-top: 10px;
+  border: 1px solid #ddd;
+  border-radius: 5px;
 }
 </style>

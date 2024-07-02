@@ -1,16 +1,12 @@
 package dao;
 
+import java.io.File;
+import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.io.Reader;
 import java.io.Writer;
-import java.lang.reflect.Type;
-import java.net.URISyntaxException;
-import java.nio.charset.StandardCharsets;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Comparator;
@@ -23,43 +19,42 @@ import com.google.gson.reflect.TypeToken;
 import com.google.gson.TypeAdapter;
 import com.google.gson.stream.JsonReader;
 import com.google.gson.stream.JsonWriter;
+import java.time.format.DateTimeFormatter;
 
+import beans.Factory;
 import beans.User;
 
 public class UserDAO {
 
     private List<User> usersList = new ArrayList<>();
     private String contextPath;
-    private Gson gson;
 
     public UserDAO() {}
 
-    public UserDAO(String contextPath) throws Exception {
+    public UserDAO(String contextPath) {
         this.contextPath = contextPath;
-        this.gson = new GsonBuilder()
-            .registerTypeAdapter(LocalDate.class, new LocalDateAdapter())
-            .create();
         loadUsersFromFile();
     }
 
-    private void loadUsersFromFile() throws Exception {
-        Path path = Paths.get(UserDAO.class.getResource("/static/users.json").toURI());
-        Type listType = new TypeToken<List<User>>() {}.getType();
-        String json = String.join("", Files.readAllLines(path));
-        usersList = gson.fromJson(json, listType);
-    }
-
-    private void saveUsersToFile() throws IOException, URISyntaxException {
-        Path path = Paths.get(UserDAO.class.getResource("/static/users.json").toURI());
-        Writer writer = Files.newBufferedWriter(path, StandardCharsets.UTF_8);
-        gson.toJson(usersList, writer);
-        writer.close();
+    private void loadUsersFromFile() {
+        try (Reader reader = new FileReader(new File(contextPath, "resources/users.json"))) {
+            Gson gson = new GsonBuilder()
+                .registerTypeAdapter(LocalDate.class, new LocalDateAdapter())
+                .create();
+            List<User> loadedUsers = gson.fromJson(reader, new TypeToken<List<User>>() {}.getType());
+            if (loadedUsers != null) {
+                usersList.clear();
+                usersList.addAll(loadedUsers);
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+            System.out.println("Error loading users from file: " + e.getMessage());
+        }
     }
 
     public Collection<User> getAll() {
         return usersList;
     }
-
     public Collection<User> searchUsers(String firstName, String lastName, String username) {
         return usersList.stream()
                 .filter(user -> (firstName == null || user.getFirstName().toLowerCase().contains(firstName.toLowerCase())) &&
@@ -96,7 +91,6 @@ public class UserDAO {
                 .filter(user -> (role == null || user.getRole().equals(role))) 
                 .collect(Collectors.toList());
     }
-
     public User getById(String id) {
         for (User user : getAll()) {
             if (user.getUsername().equals(id)) {
@@ -115,31 +109,58 @@ public class UserDAO {
         return null;
     }
 
-    public void addUser(User user) throws IOException, URISyntaxException {
-        usersList.add(user);
-        saveUsersToFile();
-    }
-
-    public void updateUser(User user) throws IOException, URISyntaxException {
-        User existingUser = getById(user.getUsername());
-        if (existingUser != null) {
-            usersList.remove(existingUser);
-            usersList.add(user);
-            saveUsersToFile();
+    private void saveUsersToFile() {
+        try (FileWriter writer = new FileWriter(new File(contextPath, "resources/users.json"))) {
+            Gson gson = new GsonBuilder()
+                .registerTypeAdapter(LocalDate.class, new LocalDateAdapter())
+                .setPrettyPrinting()
+                .create();
+            gson.toJson(usersList, writer);
+        } catch (IOException e) {
+            e.printStackTrace();
+            System.out.println("Error saving users to file: " + e.getMessage());
         }
     }
 
-    public void deleteUser(String username) throws IOException, URISyntaxException {
-        User user = getById(username);
-        if (user != null) {
-            usersList.remove(user);
-            saveUsersToFile();
+    public void updateUser(User user) {
+        for (int i = 0; i < usersList.size(); i++) {
+            if (usersList.get(i).getUsername().equals(user.getUsername())) {
+                usersList.set(i, user);
+                break;
+            }
+        }
+
+        saveUsersToFile();
+    }
+
+    public User create(User user) {
+        usersList.add(user);
+        saveUsersToFile();
+        return user;
+    }
+
+    public List<User> getManagersWithoutFactory() {
+        List<User> managersWithoutFactory = new ArrayList<>();
+        for (User user : usersList) {
+            if ("Menadžer".equals(user.getRole()) && user.getFactory() == null) {
+                managersWithoutFactory.add(user);
+            }
+        }
+        return managersWithoutFactory;
+    }
+
+    public void assignFactoryToManager(String username, Factory factory) {
+        for (User user : usersList) {
+            if (user.getUsername().equals(username)) {
+                user.setFactory(factory);
+                updateUser(user);
+                break;
+            }
         }
     }
 
     private static class LocalDateAdapter extends TypeAdapter<LocalDate> {
-
-        private static final DateTimeFormatter formatter = DateTimeFormatter.ISO_LOCAL_DATE;
+        private final DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
 
         @Override
         public void write(JsonWriter jsonWriter, LocalDate localDate) throws IOException {
