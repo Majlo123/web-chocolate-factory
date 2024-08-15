@@ -1,10 +1,10 @@
-Sistem za upravljanje fabrikama čokolade
+# Sistem za upravljanje fabrikama čokolade
 
-Akademski projekat iz predmeta Veb programiranje (2024/2025)
+## Akademski projekat iz predmeta Veb programiranje (2024/2025)
 
 -Ovaj projekat predstavlja veb aplikaciju namenjenu za upravljanje fabrikama čokolade. Podržava četiri uloge korisnika: Kupac, Radnik, Menadžer i Administrator.
 
-Tehnologije:
+## Tehnologije:
 
 -Frontend: Vue.js
 
@@ -14,7 +14,7 @@ Tehnologije:
 
 -Kontrola verzija: Gitlab
 
-Glavne funkcionalnosti:
+## Glavne funkcionalnosti:
 
 -Upravljanje korisnicima: Registracija i prijava za kupce; menadžeri i radnici se dodaju od strane administratora ili menadžera.
 
@@ -22,7 +22,7 @@ Glavne funkcionalnosti:
 
 -Upravljanje proizvodima: Menadžeri mogu dodavati, menjati ili brisati čokolade u ponudi. Radnici mogu ažurirati količine čokolade u magacinu.
 
-Screenshoots:
+## Screenshoots:
 ![Untitled](https://github.com/user-attachments/assets/2fbc4793-178b-4c26-9a17-a2172628605f)
 
 ![Untitled1](https://github.com/user-attachments/assets/6f3ea8c9-1559-47c8-9c39-291fd9955dde)
